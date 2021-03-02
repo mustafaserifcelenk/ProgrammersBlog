@@ -9,11 +9,11 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProgrammersBlog.Data.Concrete
+namespace ProgrammersBlog.Data.Concrete.EntityFramework.Repositories
 {
-    public class ArticleRepository : EfEntityRepositoryBase<Article>, IArticleRepository //Sadece IArticleRepository'i implement etseydik metotların için throw new olarak boş gelecekti
+    public class EfArticleRepository : EfEntityRepositoryBase<Article>, IArticleRepository //Sadece IArticleRepository'i implement etseydik metotların için throw new olarak boş gelecekti
     {
-        public ArticleRepository(DbContext context) : base(context)
+        public EfArticleRepository(DbContext context) : base(context)
         {
         }
     }
