@@ -29,6 +29,20 @@ namespace ProgrammersBlog.Data.Concrete.EntityFramework.Mappings
             builder.Property(r => r.IsDeleted).IsRequired();
             builder.Property(r => r.Note).HasMaxLength(500);
             builder.ToTable("Roles");
+
+            builder.HasData(new Role //HasData : Böyle bir veri var mı kontrolü
+            {
+                Id = 1,
+                Name = "Admin",
+                Description = "Admin rolü tüm haklara sahiptir.",
+                IsActive = true,
+                IsDeleted = false,
+                CreatedByName = "InitialCreate",
+                CreatedDate = DateTime.Now,
+                ModifiedByName = "InitialCreate",
+                ModifiedDate = DateTime.Now,
+                Note = "Admin rolüdür."
+            }); //Id kendi oluşturulsa da burada henüz database yaratılmadan yapılan bir ekleme olduğundan yazılmak zorunludur ve null değerler de boş geçilemez
         }
     }
 }
