@@ -11,9 +11,10 @@ namespace ProgrammersBlog.Services.Abstract
 {
     public interface ICategoryService
     {
-        Task<IDataResult<Category>> Get(int categoryId);
-        Task<IDataResult<IList<Category>>> GetAll(); // Get türü işlemler için IDataResult kullanırız
-        Task<IDataResult<IList<Category>>> GetAllByNonDeleted();
+        Task<IDataResult<CategoryDto>> Get(int categoryId);
+        Task<IDataResult<CategoryListDto>> GetAll(); // Get türü işlemler için IDataResult kullanırız
+        Task<IDataResult<CategoryListDto>> GetAllByNonDeleted();
+        Task<IDataResult<CategoryListDto>> GetAllByNonDeletedAndActive();
         Task<IResult> Add(CategoryAddDto categoryAddDto, string createdByName); // Add türü işlemler için IResult kullanırız
         Task<IResult> Update(CategoryUpdateDto categoryUpdateDto, string modifiedByName);
         Task<IResult> Delete(int categoryId, string modifiedByName);
