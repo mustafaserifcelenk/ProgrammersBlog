@@ -25,7 +25,7 @@ namespace ProgrammersBlog.Data.Concrete.EntityFramework.Mappings
             builder.Property(c => c.ModifiedDate).IsRequired(true);
             builder.Property(c => c.IsActive).IsRequired(true);
             builder.Property(c => c.IsDeleted).IsRequired(true);
-            builder.Property(c => c.Note).HasMaxLength(50);
+            builder.Property(c => c.Note).HasMaxLength(500);
             builder.ToTable("Categories");
 
             builder.HasData(
