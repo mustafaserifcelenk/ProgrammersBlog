@@ -1,0 +1,17 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace ProgrammersBlog.Mvc.Area.Admin.Controllers // Yolu düzelttik
+{
+    [Area("Admin")] // Bunu ekledik
+    public class HomeController : Controller
+    {
+        public IActionResult Index()
+        {
+            return View();
+        }
+    }
+}
