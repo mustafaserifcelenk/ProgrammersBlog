@@ -10,5 +10,6 @@ namespace ProgrammersBlog.Shared.Data.Abstract
     public abstract class DtoGetBase // abstract : Entity'den entity'e buradaki ResultStatus'un default değerle gelmesini isteyebiliriz
     {
         public virtual ResultStatus ResultStatus { get; set; }
+        public virtual string Message { get; set; }
     }
 }

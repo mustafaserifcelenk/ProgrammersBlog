@@ -39,7 +39,7 @@ namespace ProgrammersBlog.Shared.Data.Concrete.EntityFramework
             await Task.Run(()=> { _context.Set<TEntity>().Remove(entity); }) ; //Remove'un async'i yok kendimiz oluşturduk
         }
 
-        public async Task<IList<TEntity>> GetAllSync(Expression<Func<TEntity, bool>> predicate = null, params Expression<Func<TEntity, object>>[] includeProperties)
+        public async Task<IList<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> predicate = null, params Expression<Func<TEntity, object>>[] includeProperties)
         {
             //Burada yapacağımız işleri include propertiesde de kullanacağımız için abonelik işlemi yapıyoruz
             IQueryable<TEntity> query = _context.Set<TEntity>();

@@ -11,7 +11,7 @@ namespace ProgrammersBlog.Shared.Data.Abstract
     public interface IEntityRepository<T> where T : class, IEntity, new() //Where buraya sadece veritabanı nesneleri gelebilir demek
     {
         Task<T> GetAsync(Expression<Func<T,bool>> predicate, params Expression<Func<T, object>>[] includeProperties);
-        Task<IList<T>> GetAllSync(Expression<Func<T, bool>> predicate = null, params Expression<Func<T, object>>[] includeProperties); //Predicate null gelirse tüm verileri getir null değilse uygulanan filtreye göre getir.
+        Task<IList<T>> GetAllAsync(Expression<Func<T, bool>> predicate = null, params Expression<Func<T, object>>[] includeProperties); //Predicate null gelirse tüm verileri getir null değilse uygulanan filtreye göre getir.
         Task AddAsync(T entity);
         Task UpdateAsync(T entity);
         Task DeleteAsync(T entity);

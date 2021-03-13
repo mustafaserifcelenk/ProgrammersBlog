@@ -66,7 +66,7 @@ namespace ProgrammersBlog.Services.Concrete
 
         public async Task<IDataResult<ArticleListDto>> GetAll()
         {
-            var articles = await _unitOfWork.Articles.GetAllSync(null, a => a.User, a => a.Category);
+            var articles = await _unitOfWork.Articles.GetAllAsync(null, a => a.User, a => a.Category);
             if (articles.Count > -1)
             {
                 return new DataResult<ArticleListDto>(ResultStatus.Success, new ArticleListDto
@@ -83,7 +83,7 @@ namespace ProgrammersBlog.Services.Concrete
             var result = await _unitOfWork.Categories.AnyAsync(c => c.Id == categoryId);
             if (result)
             {
-                var articles = await _unitOfWork.Articles.GetAllSync(a => a.CategoryId == categoryId && !a.IsDeleted && a.IsActive, a => a.User, a => a.Category);
+                var articles = await _unitOfWork.Articles.GetAllAsync(a => a.CategoryId == categoryId && !a.IsDeleted && a.IsActive, a => a.User, a => a.Category);
                 if (articles.Count > -1)
                 {
                     return new DataResult<ArticleListDto>(ResultStatus.Success, new ArticleListDto
@@ -99,7 +99,7 @@ namespace ProgrammersBlog.Services.Concrete
 
         public async Task<IDataResult<ArticleListDto>> GetAllByNonDeleted()
         {
-            var articles = await _unitOfWork.Articles.GetAllSync(a => !a.IsDeleted, a => a.User, a => a.Category);
+            var articles = await _unitOfWork.Articles.GetAllAsync(a => !a.IsDeleted, a => a.User, a => a.Category);
             if (articles.Count > -1)
             {
                 return new DataResult<ArticleListDto>(ResultStatus.Success, new ArticleListDto
@@ -113,7 +113,7 @@ namespace ProgrammersBlog.Services.Concrete
 
         public async Task<IDataResult<ArticleListDto>> GetAllByNonDeletedAndActive()
         {
-            var articles = await _unitOfWork.Articles.GetAllSync(a => !a.IsDeleted && a.IsActive, a => a.User, a => a.Category);
+            var articles = await _unitOfWork.Articles.GetAllAsync(a => !a.IsDeleted && a.IsActive, a => a.User, a => a.Category);
             if (articles.Count > -1)
             {
                 return new DataResult<ArticleListDto>(ResultStatus.Success, new ArticleListDto

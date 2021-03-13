@@ -80,7 +80,7 @@ namespace ProgrammersBlog.Services.Concrete
 
         public async Task<IDataResult<CategoryListDto>> GetAll()
         {
-            var categories = await _unitOfWork.Categories.GetAllSync(null, c => c.Articles);
+            var categories = await _unitOfWork.Categories.GetAllAsync(null, c => c.Articles);
             if (categories.Count > -1)
             {
                 return new DataResult<CategoryListDto>(ResultStatus.Success, new CategoryListDto
@@ -89,13 +89,19 @@ namespace ProgrammersBlog.Services.Concrete
                     ResultStatus = ResultStatus.Success
                 });
             }
-            return new DataResult<CategoryListDto>(ResultStatus.Error, "Hiç bir kategori bulunamadı", null);
+            return new DataResult<CategoryListDto>(ResultStatus.Error, "Hiç bir kategori bulunamadı", new CategoryListDto
+            {
+                Categories = null,
+                ResultStatus = ResultStatus.Error,
+                Message = "Hiç bir kategori bulunamadı" 
+                // Bunu sonradan ekledik. Burada amaç controller'ın aksine view içinde de olayı çözmek istersek data olarak CategoryListDto'nun instance'ını kullanabilmek. Diğer türlü null geliyordu ve view içine bu Dto'yu geçiremiyorduk ve böylece view içinde işlem yapamıyorduk, hata alıyorduk. 
+            });
 
         }
 
         public async Task<IDataResult<CategoryListDto>> GetAllByNonDeleted()
         {
-            var categories = await _unitOfWork.Categories.GetAllSync(c => !c.IsDeleted, c => c.Articles);
+            var categories = await _unitOfWork.Categories.GetAllAsync(c => !c.IsDeleted, c => c.Articles);
             if (categories.Count > -1)
             {
                 return new DataResult<CategoryListDto>(ResultStatus.Success, new CategoryListDto
@@ -109,7 +115,7 @@ namespace ProgrammersBlog.Services.Concrete
 
         public async Task<IDataResult<CategoryListDto>> GetAllByNonDeletedAndActive()
         {
-            var categories = await _unitOfWork.Categories.GetAllSync(c => !c.IsDeleted && c.IsActive, c => c.Articles);
+            var categories = await _unitOfWork.Categories.GetAllAsync(c => !c.IsDeleted && c.IsActive, c => c.Articles);
             if (categories.Count > -1)
             {
                 return new DataResult<CategoryListDto>(ResultStatus.Success, new CategoryListDto
