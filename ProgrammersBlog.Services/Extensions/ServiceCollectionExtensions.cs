@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using ProgrammersBlog.Data.Abstract;
+using ProgrammersBlog.Data.Concrete;
 using ProgrammersBlog.Data.Concrete.EntityFramework.Contexts;
 using ProgrammersBlog.Services.Abstract;
 using ProgrammersBlog.Services.Concrete;
@@ -16,7 +17,7 @@ namespace ProgrammersBlog.Services.Extensions
         public static IServiceCollection LoadMyServices(this IServiceCollection serviceCollection)
         {
             serviceCollection.AddDbContext<ProgrammersBlogContext>();
-            serviceCollection.AddScoped<IUnitOfWork, IUnitOfWork>();
+            serviceCollection.AddScoped<IUnitOfWork, UnitOfWork>();
             serviceCollection.AddScoped<IArticleService, ArticleManager>();
             serviceCollection.AddScoped<ICategoryService, CategoryManager>();
             return serviceCollection;
