@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>@ViewBag.Title - Admin Paneli</title>
-    @await Html.PartialAsync("_LayoutCssPartial") 
+    <title>@ViewBag.Title - Admin Paneli | Programmers Blog</title>
+    @await Html.PartialAsync("_LayoutCssPartial")
 </head>
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -35,7 +35,7 @@
         </ul>
     </nav>
     <div id="layoutSidenav">
-        @await Html.PartialAsync("_LayoutSideBarNavPartial") 
+        @await Html.PartialAsync("_LayoutSideBarNavPartial")
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid">
@@ -55,7 +55,7 @@
             </footer>
         </div>
     </div>
-    @await Html.PartialAsync("_LayoutJsPartial") 
-    @await RenderSectionAsync("Scripts", false); 
+    @await Html.PartialAsync("_LayoutJsPartial")
+    @await RenderSectionAsync("Scripts", false);
 </body>
 </html>

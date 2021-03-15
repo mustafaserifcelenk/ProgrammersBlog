@@ -27,5 +27,10 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
             //}
             return View(result.Data); //CategoryManager'da yaptığımız işlem bize bu işi yukarıdaki if yardımıyla controller içinde olayı çözmenin dışında sadece View'a result.Data göndererek view'da bu işi çözmeyi sağladı. 
         }
+
+        public IActionResult Add()
+        {
+            return PartialView("_CategoryAddPartial");
+        }
     }
 }

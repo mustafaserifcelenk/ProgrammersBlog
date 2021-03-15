@@ -10,24 +10,21 @@ namespace ProgrammersBlog.Entities.Dtos
 {
     public class CategoryAddDto
     {
-        [DisplayName("Kategori adı")]
-        [Required(ErrorMessage = "{0} boş geçilemez.")]
-        [MaxLength(70, ErrorMessage ="{0} 70 karakterden büyük olamaz.")]
-        [MinLength(3, ErrorMessage ="{0, {1} karakterden az olamaz.")]
+        [DisplayName("Kategori Adı")]
+        [Required(ErrorMessage = "{0} boş geçilmemelidir.")]
+        [MaxLength(70, ErrorMessage = "{0} {1} karakterden büyük olmamalıdır.")]
+        [MinLength(3, ErrorMessage = "{0} {1} karakterden az olmamalıdır.")]
         public string Name { get; set; }
-
-        [DisplayName("Kategori açıklaması")]
-        [MaxLength(500, ErrorMessage = "{0}, {1} karakterden büyük olamaz.")]
-        [MinLength(3, ErrorMessage = "{0}, {1} karakterden az olamaz.")]
+        [DisplayName("Kategori Açıklaması")]
+        [MaxLength(500, ErrorMessage = "{0} {1} karakterden büyük olmamalıdır.")]
+        [MinLength(3, ErrorMessage = "{0} {1} karakterden az olmamalıdır.")]
         public string Description { get; set; }
-
-        [DisplayName("Kategori özel not alanı")]
-        [MaxLength(500, ErrorMessage = "{0}, {1} karakterden büyük olamaz.")]
-        [MinLength(3, ErrorMessage = "{0}, {1} karakterden az olamaz.")]
+        [DisplayName("Kategori Özel Not Alanı")]
+        [MaxLength(500, ErrorMessage = "{0} {1} karakterden büyük olmamalıdır.")]
+        [MinLength(3, ErrorMessage = "{0} {1} karakterden az olmamalıdır.")]
         public string Note { get; set; }
-
-        [DisplayName("Aktif mi?")]
-        [Required(ErrorMessage = "'{0}' alanı  boş geçilemez.")]
+        [DisplayName("Aktif Mi?")]
+        [Required(ErrorMessage = "{0} boş geçilmemelidir.")]
         public bool IsActive { get; set; }
     }
 }
