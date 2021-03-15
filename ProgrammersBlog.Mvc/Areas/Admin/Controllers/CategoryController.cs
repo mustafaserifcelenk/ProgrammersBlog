@@ -7,6 +7,7 @@ using ProgrammersBlog.Shared.Utilities.Results.ComplexTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
@@ -37,12 +38,26 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async IActionResult Add(CategoryAddDto categoryAddDto)
+        public async Task<IActionResult> Add(CategoryAddDto categoryAddDto)
         {
-            var categoryAjaxModel = new CategoryAddAjaxViewModel
+            if (ModelState.IsValid)
             {
-                CategoryAddPartial = await this.RenderViewToStringAsync("_CategoryAddPartial", categoryAddDto), // PartialView'in yanında modelide parse ediyor
-            };
+                var result = await _categoryService.Add(categoryAddDto, "Mustafa Şerif Çelenk"); // yazan ismi session yapısından gelecek
+                if (result.ResultStatus == ResultStatus.Success)
+                {
+                    var categoryAddAjaxModel = JsonSerializer.Serialize(new CategoryAddAjaxViewModel
+                    {
+                        CategoryDto = result.Data,
+                        CategoryAddPartial = await this.RenderViewToStringAsync("_CategoryAddPartial", categoryAddDto) // View içerisinde de yapacağımız validasyon için categoryAddDto'yu dönüyoruz
+                    });
+                    return Json(categoryAddAjaxModel);
+                }
+            }
+            var categoryAddAjaxErrorModel = JsonSerializer.Serialize(new CategoryAddAjaxViewModel
+            {
+                CategoryAddPartial = await this.RenderViewToStringAsync("_CategoryAddPartial", categoryAddDto)
+            });
+            return Json(categoryAddAjaxErrorModel);
         }
     }
 }

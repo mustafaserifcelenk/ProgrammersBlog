@@ -8,6 +8,7 @@ using ProgrammersBlog.Services.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace ProgrammersBlog.Mvc
@@ -19,7 +20,24 @@ namespace ProgrammersBlog.Mvc
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews().AddRazorRuntimeCompilation(); // Sen bir MVC uygulamasýsýn
+            services.AddControllersWithViews().AddRazorRuntimeCompilation().AddJsonOptions(opt=> 
+            {
+
+                // Data ile gelen veriyi parse ederek bir deðiþken içerisine atýyoruz
+                // const ajaxModel = jQuery.parseJson(data);
+                // Deðiþken içerisindeki sonuç durumunu kontrol ediyoruz
+                //if(ajaxModel.ResultStatus === 0){}
+                opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                //JsonStringEnumConverter(JsonNamingPolicy.CamelCase) 'de kullanabilirsiniz bu þu özelliði getirir
+                //if(ajaxModel.ResultStatus === "success"){}
+
+                // Modeller içine yapýlan includelarýnda sorunsuz çalýþabilmesi için, bu buglý o yüzden controllerda da vereceðiz ama yine de yazdýk
+                opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+
+
+
+
+            }); // Sen bir MVC uygulamasýsýn
             services.AddAutoMapper(typeof(CategoryProfile), typeof(ArticleProfile)); //Derlenme esnasýnda automapper'ýn buradaki sýnýflarý taramasýný saðlýyor 
             services.LoadMyServices();
         }
