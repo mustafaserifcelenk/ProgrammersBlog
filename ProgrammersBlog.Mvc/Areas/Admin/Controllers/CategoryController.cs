@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ProgrammersBlog.Entities.Dtos;
+using ProgrammersBlog.Mvc.Areas.Admin.Models;
 using ProgrammersBlog.Services.Abstract;
+using ProgrammersBlog.Shared.Utilities.Extensions;
 using ProgrammersBlog.Shared.Utilities.Results.ComplexTypes;
 using System;
 using System.Collections.Generic;
@@ -31,6 +34,15 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
         public IActionResult Add()
         {
             return PartialView("_CategoryAddPartial");
+        }
+
+        [HttpPost]
+        public async IActionResult Add(CategoryAddDto categoryAddDto)
+        {
+            var categoryAjaxModel = new CategoryAddAjaxViewModel
+            {
+                CategoryAddPartial = await this.RenderViewToStringAsync("_CategoryAddPartial", categoryAddDto), // PartialView'in yanında modelide parse ediyor
+            };
         }
     }
 }
