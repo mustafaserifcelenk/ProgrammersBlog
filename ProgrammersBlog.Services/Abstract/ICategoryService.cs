@@ -17,7 +17,7 @@ namespace ProgrammersBlog.Services.Abstract
         Task<IDataResult<CategoryListDto>> GetAllByNonDeletedAndActive();
         Task<IDataResult<CategoryDto>> Add(CategoryAddDto categoryAddDto, string createdByName); // Add türü işlemler için IResult kullanırız, ancak ajax da geriye değer dönebilmek için değiştirdik
         Task<IDataResult<CategoryDto>> Update(CategoryUpdateDto categoryUpdateDto, string modifiedByName);
-        Task<IResult> Delete(int categoryId, string modifiedByName);
+        Task<IDataResult<CategoryDto>> Delete(int categoryId, string modifiedByName);
         Task<IResult> HardDelete(int categoryId);
     }
 }

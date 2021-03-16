@@ -25,7 +25,7 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var result = await _categoryService.GetAll(); // CategoryService içerisinde bir dataresult dönüyoruz ve dönen bu result success ise ona göre işlem yapacağız, o yüzden bu dataresult'ı var result olarak almış olduk
+            var result = await _categoryService.GetAllByNonDeleted(); // CategoryService içerisinde bir dataresult dönüyoruz ve dönen bu result success ise ona göre işlem yapacağız, o yüzden bu dataresult'ı var result olarak almış olduk
             //if (result.ResultStatus == ResultStatus.Success)
             //{
             //    return View(result.Data);
@@ -63,7 +63,7 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
 
         public async Task<JsonResult> GetAllCategories()
         {
-            var result = await _categoryService.GetAll();
+            var result = await _categoryService.GetAllByNonDeleted();
 
             // Birbirine referans eden veriler olduğu için Startup'ta olduğu gibi Json option'u vereceğiz, bug olduğu için yapıyoruz bunu
             var categories = JsonSerializer.Serialize(result.Data, new JsonSerializerOptions 
@@ -77,8 +77,8 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
         public async Task<JsonResult> Delete(int categoryId)
         {
             var result = await _categoryService.Delete(categoryId, "Mustafa Şerif Çelenk");
-            var ajaxResult = JsonSerializer.Serialize(result);
-            return Json(ajaxResult);
+            var deletedCategory = JsonSerializer.Serialize(result.Data);
+            return Json(deletedCategory);
         }
     }
 }
