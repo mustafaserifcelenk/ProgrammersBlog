@@ -63,7 +63,7 @@
                                 <td>@category.ModifiedDate.ToShortDateString()</td>
                                 <td>@category.ModifiedByName</td>
                                 <td>
-                                    <button class="btn btn-primary btn-sm" ><span class="fas fa-minus-edit"></span>Düzenle</button>
+                                    <button class="btn btn-primary btn-sm"><span class="fas fa-minus-edit"></span>Düzenle</button>
                                     <button class="btn btn-danger btn-sm btn-delete" data-id="@category.Id"><span class="fas fa-minus-circle"></span>Sil</button>
                                 </td>
                             </tr>
@@ -227,7 +227,7 @@
                                 <td>${categoryAddAjaxModel.CategoryDto.Category.CreatedByName}</td>
                                 <td>${convertToShortDate(categoryAddAjaxModel.CategoryDto.Category.ModifiedDate)}</td>
                                 <td>${categoryAddAjaxModel.CategoryDto.Category.ModifiedByName}</td>
-                            </tr>`;
+                      Url     </tr>`;
                                 const newTableRowObject = $(newTableRow); // Bu stringin JQuery/Javascript objesine dönüştürme işlemi
                                 newTableRowObject.hide();
                                 $('#categoriesTable').append(newTableRowObject);
@@ -245,7 +245,54 @@
                         });
                     });
             });
-        });
+            @* Ajax POST / Posting the FormData as CategoryAddDto ends here. *@
 
+        @* Ajax POST / Deleting a Category starts from here. *@
+            // document : Sayfadaki sil butonuna tıklandığını anlaması için document diyoruz, "sayfada" anlamına geliyor (sayfa objesini veriyoruz)
+            $(document).on('click',
+                '.btn-delete',
+                function(event) {
+                    event.preventDefault();
+                    const id = $(this).attr('data-id');
+                    Swal.fire({
+                        title: 'Silmek istediğinize emin misiniz?',
+                        text: "Seçili kategori silinicektir!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Evet, silmek istiyorum.',
+                        cancelButtonText: 'Hayır, silmek istemiyorum.'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                type: 'POST',
+                                dataType: 'json',
+                                data: { categoryId: id },
+                                url: '@Url.Action("Delete", "Category")',
+                                success: function(data) {
+                                    const result = jQuery.parseJSON(data);
+                                    if (result.ResultStatus === 0) {
+                                        Swal.fire(
+                                            'Silindi!',
+                                            'Seçili kategori başarıyla silinmiştir.',
+                                            'success'
+                                        );
+                                        const tableRow = $(`[name="${id}"]`); //table row yakalamak için kullanılan yol, name attribute'undan yararlanıyoruz
+                                        tableRow.fadeOut(3500);
+                                    } else {
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Bir hata oluştu!',
+                                            text: `${result.Message}`,
+                                        });
+                                    }
+                                },
+                                error: function(err) { console.log(err); }
+                            })
+                        }
+                    })
+                });
+        });
     </script>
 }
