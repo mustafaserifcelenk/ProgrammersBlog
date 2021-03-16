@@ -4,6 +4,6 @@
 
 //date stringfy edildiğinden string olarak geliyor
 function convertToShortDate(dateString) {
-    const shortDate = new Date(dateString).toLocaleDateString('en-Us');
+    const shortDate = new Date(dateString).toLocaleDateString('en-US');
     return shortDate;
 }
