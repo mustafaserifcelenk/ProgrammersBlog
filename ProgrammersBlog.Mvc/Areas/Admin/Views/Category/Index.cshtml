@@ -30,6 +30,7 @@
                             <th>Oluşturan Kullanıcı Adı</th>
                             <th>Son Düzenlenme Tarihi</th>
                             <th>Son Düzenleyen Kullanıcı Adı</th>
+                            <th>İşlemler</th>
                         </tr>
                     </thead>
                     <tfoot>
@@ -44,12 +45,13 @@
                             <th>Oluşturan Kullanıcı Adı</th>
                             <th>Son Düzenlenme Tarihi</th>
                             <th>Son Düzenleyen Kullanıcı Adı</th>
+                            <th>İşlemler</th>
                         </tr>
                     </tfoot>
                     <tbody>
                         @foreach (var category in Model.Categories)
                         {
-                            <tr>
+                            <tr name="@category.Id">
                                 <td>@category.Id</td>
                                 <td>@category.Name</td>
                                 <td>@category.Description</td>
@@ -60,6 +62,10 @@
                                 <td>@category.CreatedByName</td>
                                 <td>@category.ModifiedDate.ToShortDateString()</td>
                                 <td>@category.ModifiedByName</td>
+                                <td>
+                                    <button class="btn btn-primary btn-sm" ><span class="fas fa-minus-edit"></span>Düzenle</button>
+                                    <button class="btn btn-danger btn-sm btn-delete" data-id="@category.Id"><span class="fas fa-minus-circle"></span>Sil</button>
+                                </td>
                             </tr>
                         }
                     </tbody>
@@ -204,8 +210,8 @@
                         const dataToSend = form.serialize(); // form'daki veriyi categoryAddDto olarak almış olduk
                         $.post(actionUrl, dataToSend).done(function (data) {
                             const categoryAddAjaxModel = jQuery.parseJSON(data);
-                            const newFormBody = $('.modal-body', categoryAddAjaxModel.CategoryAddPartial);
-                            placeHolderDiv.find('.modal-body').replaceWith(newFormBody);
+                            const newFormBody = $('.modal-body', categoryAddAjaxModel.CategoryAddPartial); // .modal-body'i categoryAddAjaxModel.CategoryAddPartial modelinin içinden seçiyoruz
+                            placeHolderDiv.find('.modal-body').replaceWith(newFormBody); // bu sanırım save butonuna basınca hemen yazılan şeylerin inputlardan silinmesine yarıyor, önemsiz
                             const isValid = newFormBody.find('[name="IsValid"]').val() === 'True';
                             if (isValid) {
                                 placeHolderDiv.find('.modal').modal('hide');
