@@ -9,8 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ProgrammersBlog.Data.Concrete.EntityFramework.Contexts
-{
-    public class ProgrammersBlogContext : IdentityDbContext<User,Role,int>//primary key alanları için integer kullanıldığının belirtilmesi
+{ 
+    public class ProgrammersBlogContext : IdentityDbContext<User,Role,int,UserClaim,UserRole,UserLogin,RoleClaim,UserToken>//primary key alanları için integer kullanıldığının belirtilmesi
     {
         public DbSet<Article> Articles { get; set; }
         public DbSet<Category> Categories { get; set; }
@@ -27,6 +27,11 @@ namespace ProgrammersBlog.Data.Concrete.EntityFramework.Contexts
             modelBuilder.ApplyConfiguration(new CommentMap());
             modelBuilder.ApplyConfiguration(new RoleMap());
             modelBuilder.ApplyConfiguration(new UserMap());
+            modelBuilder.ApplyConfiguration(new RoleClaimMap());
+            modelBuilder.ApplyConfiguration(new UserClaimMap());
+            modelBuilder.ApplyConfiguration(new UserRoleMap());
+            modelBuilder.ApplyConfiguration(new UserLoginMap());
+            modelBuilder.ApplyConfiguration(new UserTokenMap());
         }
     }
 }
