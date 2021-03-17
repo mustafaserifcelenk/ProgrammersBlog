@@ -39,6 +39,21 @@ namespace ProgrammersBlog.Mvc
             // Sen bir MVC uygulamasýsýn
             services.AddAutoMapper(typeof(CategoryProfile), typeof(ArticleProfile)); //Derlenme esnasýnda automapper'ýn buradaki sýnýflarý taramasýný saðlýyor 
             services.LoadMyServices();
+            services.ConfigureApplicationCookie(options=> 
+            {
+                options.LoginPath = new PathString("/Admin/User/Login"); //Kullanýcýnýn login olacaðý sayfa
+                options.LogoutPath = new PathString("/Admin/User/Logout");
+                options.Cookie = new CookieBuilder
+                {
+                    Name = "ProgrammersBlog",
+                    HttpOnly = true, //Cookie deðerlerini sadece Http üzerinden (XSS saldýrýlarý için)
+                    SameSite = SameSiteMode.Strict, // Cookie bilgilerinin sadece kendi sitemizden geldiðinde iþlenmesini saðlayacak ayar (CSRF saldýrýlarý için, cookie bilgilerini çalan saldýrgan bu cookie bilgilerini farklý bir siteden sunucuya gönderiyor)
+                    SecurePolicy = CookieSecurePolicy.SameAsRequest //bunu always yapmak gerekir
+                };
+                options.SlidingExpiration = true; //Kullanýcýnýn login deðerleri kaç gün geçerli kalsýn
+                options.ExpireTimeSpan = System.TimeSpan.FromDays(7);
+                options.AccessDeniedPath = new PathString("/Admin/User/AccessDenied");
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
