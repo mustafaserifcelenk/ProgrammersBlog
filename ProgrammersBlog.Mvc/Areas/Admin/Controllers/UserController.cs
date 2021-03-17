@@ -25,9 +25,11 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
         private readonly IWebHostEnvironment _env;
         private readonly IMapper _mapper;
 
-        public UserController(UserManager<User> userManager)
+        public UserController(UserManager<User> userManager, IWebHostEnvironment env, IMapper mapper)
         {
             _userManager = userManager;
+            _env = env;
+            _mapper = mapper;
         }
 
         public async Task<IActionResult> Index()
@@ -94,14 +96,16 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
         {
             string wwwroot = _env.WebRootPath;
             //string fileName = Path.GetFileNameWithoutExtension(userAddDto.PictureFile.FileName); // .png, .jpeg olmadan alıyoruz, bunu kullanabilirsin istersen
-            string fileExtension = Path.GetExtension(userAddDto.PictureFile.FileName); // burdada png aldık
+            string fileExtension = Path.GetExtension(userAddDto.PictureFile.FileName);
             DateTime dateTime = DateTime.Now;
+            // AlperTunga_587_5_38_12_3_10_2020.png
             string fileName = $"{userAddDto.UserName}_{dateTime.FullDateAndTimeStringWithUnderScore()}{fileExtension}";
-            var path = Path.Combine($"{wwwroot}", fileName);
+            var path = Path.Combine($"{wwwroot}/img", fileName);
             await using (var stream = new FileStream(path, FileMode.Create))
             {
                 await userAddDto.PictureFile.CopyToAsync(stream);
             }
+
             return fileName;
         }
     }
