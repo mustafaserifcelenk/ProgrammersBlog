@@ -2,6 +2,7 @@
 using ProgrammersBlog.Data.Abstract;
 using ProgrammersBlog.Data.Concrete;
 using ProgrammersBlog.Data.Concrete.EntityFramework.Contexts;
+using ProgrammersBlog.Entities.Concrete;
 using ProgrammersBlog.Services.Abstract;
 using ProgrammersBlog.Services.Concrete;
 using System;
@@ -17,6 +18,8 @@ namespace ProgrammersBlog.Services.Extensions
         public static IServiceCollection LoadMyServices(this IServiceCollection serviceCollection)
         {
             serviceCollection.AddDbContext<ProgrammersBlogContext>();
+            //Identity yapısı ile ilgili EFCore Configürasyonu
+            serviceCollection.AddIdentity<User, Role>().AddEntityFrameworkStores<ProgrammersBlogContext>();
             serviceCollection.AddScoped<IUnitOfWork, UnitOfWork>();
             serviceCollection.AddScoped<IArticleService, ArticleManager>();
             serviceCollection.AddScoped<ICategoryService, CategoryManager>();
