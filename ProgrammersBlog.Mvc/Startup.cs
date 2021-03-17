@@ -33,11 +33,10 @@ namespace ProgrammersBlog.Mvc
 
                 // Modeller içine yapýlan includelarýnda sorunsuz çalýþabilmesi için, bu buglý o yüzden controllerda da vereceðiz ama yine de yazdýk
                 opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+            });
 
-
-
-
-            }); // Sen bir MVC uygulamasýsýn
+            services.AddSession();
+            // Sen bir MVC uygulamasýsýn
             services.AddAutoMapper(typeof(CategoryProfile), typeof(ArticleProfile)); //Derlenme esnasýnda automapper'ýn buradaki sýnýflarý taramasýný saðlýyor 
             services.LoadMyServices();
         }
@@ -50,9 +49,11 @@ namespace ProgrammersBlog.Mvc
                 app.UseDeveloperExceptionPage();
                 app.UseStatusCodePages(); // Olmayan bir sayfaya gittiðimizde 404 döndürme
             }
+            app.UseSession();
             app.UseStaticFiles();
             app.UseRouting();
-
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapAreaControllerRoute(
