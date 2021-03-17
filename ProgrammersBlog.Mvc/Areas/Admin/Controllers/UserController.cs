@@ -45,14 +45,14 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
         public async Task<string> ImageUpload(UserAddDto userAddDto)
         {
             string wwwroot = _env.WebRootPath;
-            //string fileName = Path.GetFileNameWithoutExtension(userAddDto.Picture.FileName); // .png, .jpeg olmadan alıyoruz, bunu kullanabilirsin istersen
-            string fileExtension = Path.GetExtension(userAddDto.Picture.FileName); // burdada png aldık
+            //string fileName = Path.GetFileNameWithoutExtension(userAddDto.PictureFile.FileName); // .png, .jpeg olmadan alıyoruz, bunu kullanabilirsin istersen
+            string fileExtension = Path.GetExtension(userAddDto.PictureFile.FileName); // burdada png aldık
             DateTime dateTime = DateTime.Now;
             string fileName = $"{userAddDto.UserName}_{dateTime.FullDateAndTimeStringWithUnderScore()}{fileExtension}";
             var path = Path.Combine($"{wwwroot}", fileName);
             await using(var stream = new FileStream(path, FileMode.Create))
             {
-                await userAddDto.Picture.CopyToAsync(stream);
+                await userAddDto.PictureFile.CopyToAsync(stream);
             }
             return fileName;
         }
