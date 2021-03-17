@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
@@ -40,6 +41,21 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
                 Users = users,
                 ResultStatus = ResultStatus.Success
             });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            var users = await _userManager.Users.ToListAsync();
+            var userListDto = JsonSerializer.Serialize(new UserListDto
+            {
+                Users = users,
+                ResultStatus = ResultStatus.Success
+            }, new JsonSerializerOptions 
+            {
+                ReferenceHandler= ReferenceHandler.Preserve
+            });
+            return Json(userListDto);
         }
 
         [HttpGet]
