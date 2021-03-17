@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProgrammersBlog.Entities.Concrete;
 using ProgrammersBlog.Entities.Dtos;
+using ProgrammersBlog.Shared.Utilities.Extensions;
 using ProgrammersBlog.Shared.Utilities.Results.ComplexTypes;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,6 +18,8 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
     public class UserController : Controller
     {
         private readonly UserManager<User> _userManager;
+        // Geliştirilme ortamlarının değişmesi gibi durumlarda static dosyaların depolandığı alanlar da değişeceğinden dinamik bir yapıya ihtiyacımız var. wwwRoot ile bu imkana sahibiz, env kullanarak statik dosyaların url'sini dinamik olarak çekebiliyoruz (~/img/... ile)
+        private readonly IWebHostEnvironment _env;
 
         public UserController(UserManager<User> userManager)
         {
@@ -35,6 +40,21 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
         public IActionResult Add()
         {
             return PartialView("_UserAddPartial");
+        }
+
+        public async Task<string> ImageUpload(UserAddDto userAddDto)
+        {
+            string wwwroot = _env.WebRootPath;
+            //string fileName = Path.GetFileNameWithoutExtension(userAddDto.Picture.FileName); // .png, .jpeg olmadan alıyoruz, bunu kullanabilirsin istersen
+            string fileExtension = Path.GetExtension(userAddDto.Picture.FileName); // burdada png aldık
+            DateTime dateTime = DateTime.Now;
+            string fileName = $"{userAddDto.UserName}_{dateTime.FullDateAndTimeStringWithUnderScore()}{fileExtension}";
+            var path = Path.Combine($"{wwwroot}", fileName);
+            await using(var stream = new FileStream(path, FileMode.Create))
+            {
+                await userAddDto.Picture.CopyToAsync(stream);
+            }
+            return fileName;
         }
     }
 }
