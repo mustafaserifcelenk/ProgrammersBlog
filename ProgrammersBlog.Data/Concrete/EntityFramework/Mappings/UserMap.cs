@@ -57,41 +57,37 @@ namespace ProgrammersBlog.Data.Concrete.EntityFramework.Mappings
                 UserName = "adminuser",
                 NormalizedUserName = "ADMINUSER",
                 Email = "adminuser@gmail.com",
+                NormalizedEmail = "ADMINUSER@GMAIL.COM",
                 PhoneNumber = "+905555555555",
                 Picture = "defaultUser.png",
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
-                SecurityStamp = Guid.NewGuid().ToString() //
+                SecurityStamp = Guid.NewGuid().ToString()
             };
-            adminUser.PasswordHash = CreatePasswordHash(adminUser,"adminuser");
-
+            adminUser.PasswordHash = CreatePasswordHash(adminUser, "adminuser");
             var editorUser = new User
             {
                 Id = 2,
                 UserName = "editoruser",
                 NormalizedUserName = "EDITORUSER",
                 Email = "editoruser@gmail.com",
+                NormalizedEmail = "EDITORUSER@GMAIL.COM",
                 PhoneNumber = "+905555555555",
                 Picture = "defaultUser.png",
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
-                SecurityStamp = Guid.NewGuid().ToString() //
+                SecurityStamp = Guid.NewGuid().ToString()
             };
             editorUser.PasswordHash = CreatePasswordHash(editorUser, "editoruser");
 
             builder.HasData(adminUser, editorUser);
-
-
-
-
-
-
-            //builder.Property(u => u.Email).HasColumnName("User_email"); //Veritabanı hazır geldiyse ve veritabanında isim biizm isimlendirmemizden farklıysa böyle yapılır
         }
+
         private string CreatePasswordHash(User user, string password)
         {
             var passwordHasher = new PasswordHasher<User>();
             return passwordHasher.HashPassword(user, password);
         }
+        //builder.Property(u => u.Email).HasColumnName("User_email"); //Veritabanı hazır geldiyse ve veritabanında isim biizm isimlendirmemizden farklıysa böyle yapılır
     }
 }

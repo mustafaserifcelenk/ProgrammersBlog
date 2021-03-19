@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace ProgrammersBlog.Mvc.Area.Admin.Controllers // Yolu düzelttik
 {
     [Area("Admin")] // Bunu ekledik
-    [Authorize]
+    [Authorize(Roles ="Editor,Admin")]
     public class HomeController : Controller
     {
         public IActionResult Index()

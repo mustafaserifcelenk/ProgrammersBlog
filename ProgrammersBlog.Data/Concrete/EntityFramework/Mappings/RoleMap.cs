@@ -51,9 +51,9 @@ namespace ProgrammersBlog.Data.Concrete.EntityFramework.Mappings
                     Id = 2,
                     Name = "Editor",
                     NormalizedName = "EDITOR",
-                    ConcurrencyStamp = Guid.NewGuid().ToString() // new Guid().ToString() : 00000... lardan oluşan bir guid formatı oluşturur
+                    ConcurrencyStamp = Guid.NewGuid().ToString()
                 });
-
+            // new Guid().ToString() : 00000... lardan oluşan bir guid formatı oluşturur
             //Id kendi oluşturulsa da burada henüz database yaratılmadan yapılan bir ekleme olduğundan yazılmak zorunludur ve null değerler de boş geçilemez
         }
     }

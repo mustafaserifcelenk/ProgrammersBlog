@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize]
+    [Authorize(Roles = ("Editor,Admin"))]
     public class CategoryController : Controller
     {
         private readonly ICategoryService _categoryService;
@@ -67,7 +67,7 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
         public async Task<IActionResult> Update(int categoryId)
         {
             var result = await _categoryService.GetCategoryUpdateDto(categoryId);
-            if (result.ResultStatus==ResultStatus.Success)
+            if (result.ResultStatus == ResultStatus.Success)
             {
                 return PartialView("_CategoryUpdatePartial", result.Data);
             }
@@ -105,7 +105,7 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
             var result = await _categoryService.GetAllByNonDeleted();
 
             // Birbirine referans eden veriler olduğu için Startup'ta olduğu gibi Json option'u vereceğiz, bug olduğu için yapıyoruz bunu
-            var categories = JsonSerializer.Serialize(result.Data, new JsonSerializerOptions 
+            var categories = JsonSerializer.Serialize(result.Data, new JsonSerializerOptions
             {
                 ReferenceHandler = ReferenceHandler.Preserve
             });

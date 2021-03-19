@@ -1,27 +1,25 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProgrammersBlog.Entities.Concrete;
 using ProgrammersBlog.Entities.Dtos;
-using ProgrammersBlog.Mvc.Areas.Admin.Models;
 using ProgrammersBlog.Shared.Utilities.Extensions;
 using ProgrammersBlog.Shared.Utilities.Results.ComplexTypes;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using ProgrammersBlog.Mvc.Areas.Admin.Models;
 
 namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class UserController : Controller
     {
         private readonly UserManager<User> _userManager;
@@ -30,14 +28,14 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
         private readonly IWebHostEnvironment _env;
         private readonly IMapper _mapper;
 
-        public UserController(UserManager<User> userManager, IWebHostEnvironment env, IMapper mapper, SignInManager<User> signInManager = null)
+        public UserController(UserManager<User> userManager, IWebHostEnvironment env, IMapper mapper, SignInManager<User> signInManager)
         {
             _userManager = userManager;
             _env = env;
             _mapper = mapper;
             _signInManager = signInManager;
         }
-
+        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             var users = await _userManager.Users.ToListAsync();
@@ -65,20 +63,21 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
                 var user = await _userManager.FindByEmailAsync(userLoginDto.Email);
                 if (user != null)
                 {
-                    var result = await _signInManager.PasswordSignInAsync(user, userLoginDto.Password, userLoginDto.RememberMe, false);
+                    var result = await _signInManager.PasswordSignInAsync(user, userLoginDto.Password,
+                        userLoginDto.RememberMe, false);
                     if (result.Succeeded)
                     {
                         return RedirectToAction("Index", "Home");
                     }
                     else
                     {
-                        ModelState.AddModelError("", "E-posta adresi veya şifre hatalı.");
+                        ModelState.AddModelError("", "E-posta adresiniz veya şifreniz yanlıştır.");
                         return View("UserLogin");
                     }
                 }
                 else
                 {
-                    ModelState.AddModelError("", "E-posta adresi veya şifre hatalı.");
+                    ModelState.AddModelError("", "E-posta adresiniz veya şifreniz yanlıştır.");
                     return View("UserLogin");
                 }
             }
@@ -86,10 +85,11 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
             {
                 return View("UserLogin");
             }
-        }
 
+        }
+        //[Authorize(Roles = "Admin")]
         [HttpGet]
-        public async Task<IActionResult> GetAllUsers()
+        public async Task<JsonResult> GetAllUsers()
         {
             var users = await _userManager.Users.ToListAsync();
             var userListDto = JsonSerializer.Serialize(new UserListDto
@@ -102,13 +102,13 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
             });
             return Json(userListDto);
         }
-
+        //[Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult Add()
         {
             return PartialView("_UserAddPartial");
         }
-
+        //[Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Add(UserAddDto userAddDto)
         {
@@ -124,7 +124,7 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
                         UserDto = new UserDto
                         {
                             ResultStatus = ResultStatus.Success,
-                            Message = $"{user.UserName} adlı kullanıcı başarıyla eklenmiştir.",
+                            Message = $"{user.UserName} adlı kullanıcı adına sahip, kullanıcı başarıyla eklenmiştir.",
                             User = user
                         },
                         UserAddPartial = await this.RenderViewToStringAsync("_UserAddPartial", userAddDto)
@@ -137,6 +137,7 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
                     {
                         ModelState.AddModelError("", error.Description);
                     }
+
                     var userAddAjaxErrorModel = JsonSerializer.Serialize(new UserAddAjaxViewModel
                     {
                         UserAddDto = userAddDto,
@@ -144,6 +145,7 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
                     });
                     return Json(userAddAjaxErrorModel);
                 }
+
             }
             var userAddAjaxModelStateErrorModel = JsonSerializer.Serialize(new UserAddAjaxViewModel
             {
@@ -151,8 +153,9 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
                 UserAddPartial = await this.RenderViewToStringAsync("_UserAddPartial", userAddDto)
             });
             return Json(userAddAjaxModelStateErrorModel);
-        }
 
+        }
+        //[Authorize(Roles = "Admin")]
         public async Task<JsonResult> Delete(int userId)
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
@@ -162,7 +165,7 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
                 var deletedUser = JsonSerializer.Serialize(new UserDto
                 {
                     ResultStatus = ResultStatus.Success,
-                    Message = $"{user.UserName} adlı kullanıcı başarıyla silinmiştir.",
+                    Message = $"{user.UserName} adlı kullanıcı adına sahip kullanıcı başarıyla silinmiştir.",
                     User = user
                 });
                 return Json(deletedUser);
@@ -174,16 +177,18 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
                 {
                     errorMessages = $"*{error.Description}\n";
                 }
+
                 var deletedUserErrorModel = JsonSerializer.Serialize(new UserDto
                 {
                     ResultStatus = ResultStatus.Error,
-                    Message = $"{user.UserName} adlı kullanıcı silinirken hata oluştu.\n{errorMessages}",
+                    Message =
+                        $"{user.UserName} adlı kullanıcı adına sahip kullanıcı silinirken bazı hatalar oluştu.\n{errorMessages}",
                     User = user
                 });
                 return Json(deletedUserErrorModel);
             }
         }
-
+        //[Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<PartialViewResult> Update(int userId)
         {
@@ -191,7 +196,7 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
             var userUpdateDto = _mapper.Map<UserUpdateDto>(user);
             return PartialView("_UserUpdatePartial", userUpdateDto);
         }
-
+        //[Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Update(UserUpdateDto userUpdateDto)
         {
@@ -252,9 +257,10 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
                 return Json(userUpdateModelStateErrorViewModel);
             }
         }
-
+        [Authorize(Roles = "Admin,Editor")]
         public async Task<string> ImageUpload(string userName, IFormFile pictureFile)
         {
+            // ~/img/user.Picture
             string wwwroot = _env.WebRootPath;
             //string fileName = Path.GetFileNameWithoutExtension(userAddDto.PictureFile.FileName); // .png, .jpeg olmadan alıyoruz, bunu kullanabilirsin istersen
             string fileExtension = Path.GetExtension(pictureFile.FileName);
@@ -267,9 +273,9 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
                 await pictureFile.CopyToAsync(stream);
             }
 
-            return fileName;
+            return fileName; // AlperTunga_587_5_38_12_3_10_2020.png - "~/img/user.Picture"
         }
-
+        [Authorize(Roles = "Admin,Editor")]
         public bool ImageDelete(string pictureName)
         {
             string wwwroot = _env.WebRootPath;
@@ -279,7 +285,10 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
                 System.IO.File.Delete(fileToDelete);
                 return true;
             }
-            return false;
+            else
+            {
+                return false;
+            }
         }
     }
 }
