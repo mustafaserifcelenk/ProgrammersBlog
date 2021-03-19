@@ -70,7 +70,7 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                userAddDto.Picture = await ImageUpload(userAddDto);
+                userAddDto.Picture = await ImageUpload(userAddDto.UserName, userAddDto.PictureFile);
                 var user = _mapper.Map<User>(userAddDto);
                 var result = await _userManager.CreateAsync(user, userAddDto.Password); // Password'ü hashlemek için ayrı olarak istiyor onu
                 if (result.Succeeded)
@@ -153,14 +153,15 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                bool isNewPictureUploaded = false; 
-            var oldUser = await _userManager.FindByIdAsync(userUpdateDto.Id.ToString());
+                bool isNewPictureUploaded = false;
+                var oldUser = await _userManager.FindByIdAsync(userUpdateDto.Id.ToString());
                 var oldUserPicture = oldUser.Picture;
-                if (userUpdateDto.Picture!=null)
+                if (userUpdateDto.PictureFile != null)
                 {
                     userUpdateDto.Picture = await ImageUpload(userUpdateDto.UserName, userUpdateDto.PictureFile);
                     isNewPictureUploaded = true;
                 }
+
                 var updatedUser = _mapper.Map<UserUpdateDto, User>(userUpdateDto, oldUser);
                 var result = await _userManager.UpdateAsync(updatedUser);
                 if (result.Succeeded)
@@ -169,6 +170,7 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
                     {
                         ImageDelete(oldUserPicture);
                     }
+
                     var userUpdateViewModel = JsonSerializer.Serialize(new UserUpdateAjaxViewModel
                     {
                         UserDto = new UserDto
@@ -187,13 +189,14 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
                     {
                         ModelState.AddModelError("", error.Description);
                     }
-                    var userUpdateErrorViewModel = JsonSerializer.Serialize(new UserUpdateAjaxViewModel
+                    var userUpdateErorViewModel = JsonSerializer.Serialize(new UserUpdateAjaxViewModel
                     {
                         UserUpdateDto = userUpdateDto,
                         UserUpdatePartial = await this.RenderViewToStringAsync("_UserUpdatePartial", userUpdateDto)
                     });
-                    return Json(userUpdateErrorViewModel);
+                    return Json(userUpdateErorViewModel);
                 }
+
             }
             else
             {
