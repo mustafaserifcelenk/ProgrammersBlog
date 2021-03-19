@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -20,18 +21,21 @@ using System.Threading.Tasks;
 namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize]
     public class UserController : Controller
     {
         private readonly UserManager<User> _userManager;
         // Geliştirilme ortamlarının değişmesi gibi durumlarda static dosyaların depolandığı alanlar da değişeceğinden dinamik bir yapıya ihtiyacımız var. wwwRoot ile bu imkana sahibiz, env kullanarak statik dosyaların url'sini dinamik olarak çekebiliyoruz (~/img/... ile)
+        private readonly SignInManager<User> _signInManager;
         private readonly IWebHostEnvironment _env;
         private readonly IMapper _mapper;
 
-        public UserController(UserManager<User> userManager, IWebHostEnvironment env, IMapper mapper)
+        public UserController(UserManager<User> userManager, IWebHostEnvironment env, IMapper mapper, SignInManager<User> signInManager = null)
         {
             _userManager = userManager;
             _env = env;
             _mapper = mapper;
+            _signInManager = signInManager;
         }
 
         public async Task<IActionResult> Index()
@@ -45,9 +49,43 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public IActionResult UserLogin()
+        [AllowAnonymous]
+        public IActionResult Login()
         {
-            return View();
+            return View("UserLogin");
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> Login(UserLoginDto userLoginDto)
+        {
+            if (ModelState.IsValid)
+            {
+                // SignInManager 4 değer bekliyor : 1) User 2) User Şifre 3)IsPersistent(remember) 4) şifre belirli kez yanlış girilirse kitleme lock out
+                var user = await _userManager.FindByEmailAsync(userLoginDto.Email);
+                if (user != null)
+                {
+                    var result = await _signInManager.PasswordSignInAsync(user, userLoginDto.Password, userLoginDto.RememberMe, false);
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "E-posta adresi veya şifre hatalı.");
+                        return View("UserLogin");
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "E-posta adresi veya şifre hatalı.");
+                    return View("UserLogin");
+                }
+            }
+            else
+            {
+                return View("UserLogin");
+            }
         }
 
         [HttpGet]
@@ -58,9 +96,9 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
             {
                 Users = users,
                 ResultStatus = ResultStatus.Success
-            }, new JsonSerializerOptions 
+            }, new JsonSerializerOptions
             {
-                ReferenceHandler= ReferenceHandler.Preserve
+                ReferenceHandler = ReferenceHandler.Preserve
             });
             return Json(userListDto);
         }
@@ -115,7 +153,7 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
             return Json(userAddAjaxModelStateErrorModel);
         }
 
-        public async Task<JsonResult> Delete (int userId)
+        public async Task<JsonResult> Delete(int userId)
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
             var result = await _userManager.DeleteAsync(user);
