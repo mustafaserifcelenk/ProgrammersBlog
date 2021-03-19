@@ -44,14 +44,14 @@ namespace ProgrammersBlog.Data.Concrete.EntityFramework.Mappings
                     Id = 1,
                     Name = "Admin",
                     NormalizedName = "ADMIN",
-                    ConcurrencyStamp = new Guid().ToString()
+                    ConcurrencyStamp = Guid.NewGuid().ToString()
                 },
                 new Role
                 {
-                    Id = 1,
+                    Id = 2,
                     Name = "Editor",
                     NormalizedName = "EDITOR",
-                    ConcurrencyStamp = new Guid().ToString()
+                    ConcurrencyStamp = Guid.NewGuid().ToString() // new Guid().ToString() : 00000... lardan oluşan bir guid formatı oluşturur
                 });
 
             //Id kendi oluşturulsa da burada henüz database yaratılmadan yapılan bir ekleme olduğundan yazılmak zorunludur ve null değerler de boş geçilemez
