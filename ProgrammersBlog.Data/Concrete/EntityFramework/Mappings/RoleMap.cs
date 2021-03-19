@@ -38,7 +38,21 @@ namespace ProgrammersBlog.Data.Concrete.EntityFramework.Mappings
             // Each Role can have many associated RoleClaims
             builder.HasMany<RoleClaim>().WithOne().HasForeignKey(rc => rc.RoleId).IsRequired();
 
-
+            builder.HasData(
+                new Role
+                {
+                    Id = 1,
+                    Name = "Admin",
+                    NormalizedName = "ADMIN",
+                    ConcurrencyStamp = new Guid().ToString()
+                },
+                new Role
+                {
+                    Id = 1,
+                    Name = "Editor",
+                    NormalizedName = "EDITOR",
+                    ConcurrencyStamp = new Guid().ToString()
+                });
 
             //Id kendi oluşturulsa da burada henüz database yaratılmadan yapılan bir ekleme olduğundan yazılmak zorunludur ve null değerler de boş geçilemez
         }
