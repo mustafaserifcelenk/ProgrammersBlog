@@ -232,7 +232,10 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
                     userUpdateDto.Picture = uploadedImageDtoResult.ResultStatus == ResultStatus.Success
                         ? uploadedImageDtoResult.Data.FullName
                         : "userImages/defaultUser.png";
-                    isNewPictureUploaded = true;
+                    if (oldUserPicture != "userImages/defaultUser.png")
+                    {
+                        isNewPictureUploaded = true;
+                    }
                 }
 
                 var updatedUser = _mapper.Map<UserUpdateDto, User>(userUpdateDto, oldUser);
@@ -241,7 +244,7 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
                 {
                     if (isNewPictureUploaded)
                     {
-                        ImageDelete(oldUserPicture);
+                        _imageHelper.Delete(oldUserPicture);
                     }
 
                     var userUpdateViewModel = JsonSerializer.Serialize(new UserUpdateAjaxViewModel
@@ -306,7 +309,7 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
                     userUpdateDto.Picture = uploadedImageDtoResult.ResultStatus == ResultStatus.Success
                         ? uploadedImageDtoResult.Data.FullName
                         : "userImages/defaultUser.png";
-                    if (oldUserPicture != "defaultUser.png")
+                    if (oldUserPicture != "userImages/defaultUser.png")
                     {
                         isNewPictureUploaded = true;
                     }
@@ -319,7 +322,7 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
                 {
                     if (isNewPictureUploaded)
                     {
-                        ImageDelete(oldUserPicture);
+                        _imageHelper.Delete(oldUserPicture);
                     }
                     TempData.Add("SuccessMessage", $"{updatedUser.UserName} adlı kullanıcı başarıyla güncellenmiştir.");
                     return View(userUpdateDto);
@@ -387,12 +390,6 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
             {
                 return View(userPasswordChangeDto);
             }
-        }
-
-        [Authorize(Roles = "Admin,Editor")]
-        public bool ImageDelete(string pictureName)
-        {
-            return true;
         }
     }
 }

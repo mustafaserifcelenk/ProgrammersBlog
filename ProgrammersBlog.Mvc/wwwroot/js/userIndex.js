@@ -260,8 +260,10 @@
                     success: function (data) {
                         const userUpdateAjaxModel = jQuery.parseJSON(data);
                         console.log(userUpdateAjaxModel);
-                        const id = userUpdateAjaxModel.UserDto.User.Id;
-                        const tableRow = $(`[name="${id}"]`);
+                        if (userUpdateAjaxModel.UserDto !== null) {
+                            const id = userUpdateAjaxModel.UserDto.User.Id;
+                            const tableRow = $(`[name="${id}"]`);
+                        }
                         const newFormBody = $('.modal-body', userUpdateAjaxModel.UserUpdatePartial);
                         placeHolderDiv.find('.modal-body').replaceWith(newFormBody);
                         const isValid = newFormBody.find('[name="IsValid"]').val() === 'True';
@@ -279,7 +281,7 @@
                             `
                             ]);
                             tableRow.attr("name", `${id}`);
-                            dataTable.row(tableRow).invalidate(); // Değişimden table row'u haberdar etme
+                            dataTable.row(tableRow).invalidate();
                             toastr.success(`${userUpdateAjaxModel.UserDto.Message}`, "Başarılı İşlem!");
                         } else {
                             let summaryText = "";
@@ -292,6 +294,7 @@
                     },
                     error: function (error) {
                         console.log(error);
+                        toastr.error(`${err.responseText}`, 'Hata!');
                     }
                 });
             });
