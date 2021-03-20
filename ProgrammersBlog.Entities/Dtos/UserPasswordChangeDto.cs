@@ -15,7 +15,7 @@ namespace ProgrammersBlog.Entities.Dtos
         [MaxLength(30, ErrorMessage = "{0} {1} karakterden büyük olmamalıdır.")]
         [MinLength(5, ErrorMessage = "{0} {1} karakterden küçük olmamalıdır.")]
         [DataType(DataType.Password)]
-        public string Password { get; set; }
+        public string CurrentPassword { get; set; }
 
         [DisplayName("Yeni şifreniz")]
         [Required(ErrorMessage = "{0} boş geçilmemelidir.")]
