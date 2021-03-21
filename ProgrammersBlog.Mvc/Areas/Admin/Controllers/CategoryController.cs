@@ -27,7 +27,7 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var result = await _categoryService.GetAllByNonDeleted(); // CategoryService içerisinde bir dataresult dönüyoruz ve dönen bu result success ise ona göre işlem yapacağız, o yüzden bu dataresult'ı var result olarak almış olduk
+            var result = await _categoryService.GetAllByNonDeletedAsync(); // CategoryService içerisinde bir dataresult dönüyoruz ve dönen bu result success ise ona göre işlem yapacağız, o yüzden bu dataresult'ı var result olarak almış olduk
             //if (result.ResultStatus == ResultStatus.Success)
             //{
             //    return View(result.Data);
@@ -45,7 +45,7 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await _categoryService.Add(categoryAddDto, "Mustafa Şerif Çelenk"); // yazan ismi session yapısından gelecek
+                var result = await _categoryService.AddAsync(categoryAddDto, "Mustafa Şerif Çelenk"); // yazan ismi session yapısından gelecek
                 if (result.ResultStatus == ResultStatus.Success)
                 {
                     var categoryAddAjaxModel = JsonSerializer.Serialize(new CategoryAddAjaxViewModel
@@ -66,7 +66,7 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Update(int categoryId)
         {
-            var result = await _categoryService.GetCategoryUpdateDto(categoryId);
+            var result = await _categoryService.GetCategoryUpdateDtoAsync(categoryId);
             if (result.ResultStatus == ResultStatus.Success)
             {
                 return PartialView("_CategoryUpdatePartial", result.Data);
@@ -82,7 +82,7 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await _categoryService.Update(categoryUpdateDto, "Mustafa Şerif Çelenk"); // yazan ismi session yapısından gelecek
+                var result = await _categoryService.UpdateAsync(categoryUpdateDto, "Mustafa Şerif Çelenk"); // yazan ismi session yapısından gelecek
                 if (result.ResultStatus == ResultStatus.Success)
                 {
                     var categoryUpdateAjaxModel = JsonSerializer.Serialize(new CategoryUpdateAjaxViewModel
@@ -102,7 +102,7 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
 
         public async Task<JsonResult> GetAllCategories()
         {
-            var result = await _categoryService.GetAllByNonDeleted();
+            var result = await _categoryService.GetAllByNonDeletedAsync();
 
             // Birbirine referans eden veriler olduğu için Startup'ta olduğu gibi Json option'u vereceğiz, bug olduğu için yapıyoruz bunu
             var categories = JsonSerializer.Serialize(result.Data, new JsonSerializerOptions
@@ -115,7 +115,7 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
         [HttpPost]
         public async Task<JsonResult> Delete(int categoryId)
         {
-            var result = await _categoryService.Delete(categoryId, "Mustafa Şerif Çelenk");
+            var result = await _categoryService.DeleteAsync(categoryId, "Mustafa Şerif Çelenk");
             var deletedCategory = JsonSerializer.Serialize(result.Data);
             return Json(deletedCategory);
         }

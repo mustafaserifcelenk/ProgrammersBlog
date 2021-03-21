@@ -12,16 +12,16 @@ namespace ProgrammersBlog.Services.Abstract
     public interface IArticleService
     {
         //Burada işleri biraz daha profesyonelleştirerek article nesnesini yani domain modelimizi dışarı açmadan bu işleri yapmaya çalışacağız
-        Task<IDataResult<ArticleDto>> Get(int articleId);
-        Task<IDataResult<ArticleListDto>> GetAll(); // Get türü işlemler için IDataResult kullanırız
-        Task<IDataResult<ArticleListDto>> GetAllByNonDeleted();
-        Task<IDataResult<ArticleListDto>> GetAllByNonDeletedAndActive();
-        Task<IDataResult<ArticleListDto>> GetAllByCategory(int categoryId);
-        Task<IResult> Add(ArticleAddDto articleAddDto, string createdByName); // Add türü işlemler için IResult kullanırız
-        Task<IResult> Update(ArticleUpdateDto articleUpdateDto, string modifiedByName);
-        Task<IResult> Delete(int articleId, string modifiedByName);
-        Task<IResult> HardDelete(int articleId);
-        Task<IDataResult<int>> Count();
-        Task<IDataResult<int>> CountByNonDeleted();
+        Task<IDataResult<ArticleDto>> GetAsync(int articleId);
+        Task<IDataResult<ArticleListDto>> GetAllAsync(); // Get türü işlemler için IDataResult kullanırız
+        Task<IDataResult<ArticleListDto>> GetAllByNonDeletedAsync();
+        Task<IDataResult<ArticleListDto>> GetAllByNonDeletedAndActiveAsync();
+        Task<IDataResult<ArticleListDto>> GetAllByCategoryAsync(int categoryId);
+        Task<IResult> AddAsync(ArticleAddDto articleAddDto, string createdByName); // Add türü işlemler için IResult kullanırız
+        Task<IResult> UpdateAsync(ArticleUpdateDto articleUpdateDto, string modifiedByName);
+        Task<IResult> DeleteAsync(int articleId, string modifiedByName);
+        Task<IResult> HardDeleteAsync(int articleId);
+        Task<IDataResult<int>> CountAsync();
+        Task<IDataResult<int>> CountByNonDeletedAsync();
     }
 }
