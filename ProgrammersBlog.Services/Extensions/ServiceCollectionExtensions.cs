@@ -36,6 +36,7 @@ namespace ProgrammersBlog.Services.Extensions
             serviceCollection.AddScoped<IUnitOfWork, UnitOfWork>();
             serviceCollection.AddScoped<IArticleService, ArticleManager>();
             serviceCollection.AddScoped<ICategoryService, CategoryManager>();
+            serviceCollection.AddScoped<ICommentService, CommentManager>();
             return serviceCollection;
         }
     }
