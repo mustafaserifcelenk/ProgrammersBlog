@@ -184,6 +184,11 @@ namespace ProgrammersBlog.Services.Concrete
             return new DataResult<CategoryListDto>(ResultStatus.Error, Messages.Category.NotFound(isPlural: false), null);
         }
 
+        /// <summary>
+        /// Verilen Id parametresine ait kategorinin CategoryUpdateDto temsilini geriye döner.
+        /// </summary>
+        /// <param name="categoryId">0'dan büyük integer bir Id değeri.</param>
+        /// <returns>Asenkron bir operasyon ile Task olarak işlem sonucu DataResult tipinde geriye döner.</returns>
         public async Task<IDataResult<CategoryUpdateDto>> GetCategoryUpdateDtoAsync(int categoryId)
         {
             var result = await _unitOfWork.Categories.AnyAsync(c => c.Id == categoryId);
