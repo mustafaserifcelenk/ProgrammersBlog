@@ -13,6 +13,7 @@ namespace ProgrammersBlog.Services.Abstract
     {
         //Burada işleri biraz daha profesyonelleştirerek article nesnesini yani domain modelimizi dışarı açmadan bu işleri yapmaya çalışacağız
         Task<IDataResult<ArticleDto>> GetAsync(int articleId);
+        Task<IDataResult<ArticleUpdateDto>> GetArticleUpdateDtoAsync(int articleId);
         Task<IDataResult<ArticleListDto>> GetAllAsync(); // Get türü işlemler için IDataResult kullanırız
         Task<IDataResult<ArticleListDto>> GetAllByNonDeletedAsync();
         Task<IDataResult<ArticleListDto>> GetAllByNonDeletedAndActiveAsync();
