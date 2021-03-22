@@ -1,5 +1,8 @@
 ﻿// Sayfadaki herşey yüklendikten sonra...
 $(document).ready(function () {
+
+    // Trumbowyg
+
     $('#text-editor').trumbowyg({
         btns: [
             ['viewHTML'],
@@ -31,4 +34,14 @@ $(document).ready(function () {
         //    }
         //}
     });
+
+    // Trumbowyg
+
+
+    $('#categoryList').select2({
+        theme: 'bootstrap4',
+        placeholder: "Lütfen bir kategori seçiniz",
+        allowClear: true
+    });
+
 })
