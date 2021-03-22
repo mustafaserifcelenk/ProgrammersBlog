@@ -259,7 +259,7 @@
         <td>${categoryUpdateAjaxModel.CategoryDto.Category.Name}</td>
         <td>${categoryUpdateAjaxModel.CategoryDto.Category.Description}</td>
         <td>${categoryUpdateAjaxModel.CategoryDto.Category.IsActive ? "Evet" : "Hayır"}</td>
-        <td>${(categoryUpdateAjaxModel.CategoryDto.Category.IsDeleted ? "Evet" : "Hayır"}</td>
+        <td>${categoryUpdateAjaxModel.CategoryDto.Category.IsDeleted ? "Evet" : "Hayır"}</td>
         <td>${categoryUpdateAjaxModel.CategoryDto.Category.Note}</td>
         <td>${convertToShortDate(categoryUpdateAjaxModel.CategoryDto.Category.CreatedDate)}</td>
         <td>${categoryUpdateAjaxModel.CategoryDto.Category.CreatedByName}</td>

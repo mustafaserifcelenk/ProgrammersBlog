@@ -69,6 +69,8 @@ $(document).ready(function () {
             showMonthAfterYear: false,
             yearSuffix: "", 
             duration: 750,
+            showAnim: "drop",
+            showOptions: {direction:"down"},
             minDate: -1,
             maxDate: +1
 
