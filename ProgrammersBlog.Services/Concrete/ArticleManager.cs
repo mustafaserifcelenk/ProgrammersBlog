@@ -178,16 +178,16 @@ namespace ProgrammersBlog.Services.Concrete
 
         public async Task<IDataResult<ArticleUpdateDto>> GetArticleUpdateDtoAsync(int articleId)
         {
-            var result = await _unitOfWork.Articles.AnyAsync(c => c.Id == articleId);
+            var result = await _unitOfWork.Articles.AnyAsync(a => a.Id == articleId);
             if (result)
             {
-                var article = await _unitOfWork.Categories.GetAsync(c => c.Id == articleId);
+                var article = await _unitOfWork.Articles.GetAsync(a => a.Id == articleId);
                 var articleUpdateDto = _mapper.Map<ArticleUpdateDto>(article);
                 return new DataResult<ArticleUpdateDto>(ResultStatus.Success, articleUpdateDto);
             }
             else
             {
-                return new DataResult<ArticleUpdateDto>(ResultStatus.Error, Messages.Category.NotFound(isPlural: false), null);
+                return new DataResult<ArticleUpdateDto>(ResultStatus.Error, Messages.Article.NotFound(isPlural: false), null);
             }
         }
     }
