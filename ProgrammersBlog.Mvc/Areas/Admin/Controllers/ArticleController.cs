@@ -131,5 +131,12 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
             return View(articleUpdateViewModel);
         }
 
+        [HttpPost]
+        public async Task<JsonResult> Delete(int articleId)
+        {
+            var result = await _articleService.DeleteAsync(articleId, LoggedInUser.UserName);
+            var articleResult = JsonSerializer.Serialize(result);
+            return Json(articleResult);
+        }
     }
 }

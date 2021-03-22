@@ -104,18 +104,19 @@
     /*DataTables ends here*/
 
 
-    //     Ajax POST / Deleting a User starts from here. 
+    //     Ajax POST / Deleting a Article starts from here. 
     //     document : Sayfadaki sil butonuna tıklandığını anlaması için document diyoruz, "sayfada" anlamına geliyor (sayfa objesini veriyoruz)
+
     $(document).on('click',
         '.btn-delete',
         function (event) {
             event.preventDefault();
             const id = $(this).attr('data-id');
             const tableRow = $(`[name="${id}"]`);
-            const userName = tableRow.find('td:eq(1)').text();
+            const articleTitle = tableRow.find('td:eq(2)').text();
             Swal.fire({
                 title: 'Silmek istediğinize emin misiniz?',
-                text: `${userName} adlı kullanıcı silinicektir!`,
+                text: `${articleTitle} başlıklı makale silinicektir!`,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -127,14 +128,14 @@
                     $.ajax({
                         type: 'POST',
                         dataType: 'json',
-                        data: { userId: id },
-                        url: '/Admin/User/Delete/',
+                        data: { articleId: id },
+                        url: '/Admin/Article/Delete/',
                         success: function (data) {
-                            const userDto = jQuery.parseJSON(data);
-                            if (userDto.ResultStatus === 0) {
+                            const articleResult = jQuery.parseJSON(data);
+                            if (articleResult.ResultStatus === 0) {
                                 Swal.fire(
                                     'Silindi!',
-                                    `${userDto.User.UserName} adlı kullanıcı başarıyla silinmiştir.`,
+                                    `${articleResult.Message}`,
                                     'success'
                                 );
 
@@ -143,13 +144,13 @@
                                 Swal.fire({
                                     icon: 'error',
                                     title: 'Başarısız İşlem!',
-                                    text: `${userDto.Message}`,
+                                    text: `${articleResult.Message}`,
                                 });
                             }
                         },
                         error: function (err) {
                             console.log(err);
-                            toastr.error(`${err.responseText}`, "Hata!")
+                            toastr.error(`${err.responseText}`, "Hata!");
                         }
                     });
                 }
