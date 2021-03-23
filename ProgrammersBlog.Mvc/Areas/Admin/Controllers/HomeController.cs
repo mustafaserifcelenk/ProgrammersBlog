@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 namespace ProgrammersBlog.Mvc.Area.Admin.Controllers // Yolu düzelttik
 {
     [Area("Admin")] // Bunu ekledik
-    [Authorize(Roles = "Editor,Admin")]
     public class HomeController : Controller
     {
         private readonly ICategoryService _categoryService;
@@ -30,6 +29,7 @@ namespace ProgrammersBlog.Mvc.Area.Admin.Controllers // Yolu düzelttik
             _userManager = userManager;
         }
 
+        [Authorize(Roles ="SuperAdmin,AdminArea.Home.Read")]
         public async Task<IActionResult> Index()
         {
             var categoriesCountResult = await _categoryService.CountByNonDeletedAsync();

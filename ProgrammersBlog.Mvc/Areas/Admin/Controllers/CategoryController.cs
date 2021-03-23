@@ -19,7 +19,6 @@ using System.Threading.Tasks;
 namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = ("Editor,Admin"))]
     public class CategoryController : BaseController
     {
         private readonly ICategoryService _categoryService;
@@ -29,6 +28,7 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
             _categoryService = categoryService;
         }
 
+        [Authorize(Roles ="SuperAdmin,Category.Read")]
         public async Task<IActionResult> Index()
         {
             var result = await _categoryService.GetAllByNonDeletedAsync(); // CategoryService içerisinde bir dataresult dönüyoruz ve dönen bu result success ise ona göre işlem yapacağız, o yüzden bu dataresult'ı var result olarak almış olduk
@@ -39,11 +39,14 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
             return View(result.Data); //CategoryManager'da yaptığımız işlem bize bu işi yukarıdaki if yardımıyla controller içinde olayı çözmenin dışında sadece View'a result.Data göndererek view'da bu işi çözmeyi sağladı. 
         }
 
+        [Authorize(Roles = "SuperAdmin,Category.Create")]
+        [HttpGet]
         public IActionResult Add()
         {
             return PartialView("_CategoryAddPartial");
         }
 
+        [Authorize(Roles = "SuperAdmin,Category.Create")]
         [HttpPost]
         public async Task<IActionResult> Add(CategoryAddDto categoryAddDto)
         {
@@ -67,6 +70,7 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
             return Json(categoryAddAjaxErrorModel);
         }
 
+        [Authorize(Roles = "SuperAdmin,Category.Update")]
         [HttpGet]
         public async Task<IActionResult> Update(int categoryId)
         {
@@ -81,6 +85,7 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
             }
         }
 
+        [Authorize(Roles = "SuperAdmin,Category.Update")]
         [HttpPost]
         public async Task<IActionResult> Update(CategoryUpdateDto categoryUpdateDto)
         {
@@ -104,6 +109,8 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
             return Json(categoryUpdateAjaxErrorModel);
         }
 
+        [Authorize(Roles = "SuperAdmin,Category.Read")]
+        [HttpGet]
         public async Task<JsonResult> GetAllCategories()
         {
             var result = await _categoryService.GetAllByNonDeletedAsync();
@@ -116,6 +123,7 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
             return Json(categories);
         }
 
+        [Authorize(Roles = "SuperAdmin,Category.Delete")]
         [HttpPost]
         public async Task<JsonResult> Delete(int categoryId)
         {
