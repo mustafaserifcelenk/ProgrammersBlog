@@ -31,7 +31,11 @@ namespace ProgrammersBlog.Mvc
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews().AddRazorRuntimeCompilation().AddJsonOptions(opt=> 
+            services.AddControllersWithViews(options =>
+            {
+                //SelectList boþ geldiðinde model state hata verdiðinde ingilizce olan mesaj türkçe oldu
+                options.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(value => "Bu alan boþ geçilmemelidir.");
+            }).AddRazorRuntimeCompilation().AddJsonOptions(opt =>
             {
 
                 // Data ile gelen veriyi parse ederek bir deðiþken içerisine atýyoruz
@@ -49,9 +53,9 @@ namespace ProgrammersBlog.Mvc
             services.AddSession();
             // Sen bir MVC uygulamasýsýn
             services.AddAutoMapper(typeof(CategoryProfile), typeof(ArticleProfile), typeof(UserProfile), typeof(ViewModelsProfile), typeof(CommentProfile)); //Derlenme esnasýnda automapper'ýn buradaki sýnýflarý taramasýný saðlýyor 
-            services.LoadMyServices(connectionString:Configuration.GetConnectionString("localDB"));
+            services.LoadMyServices(connectionString: Configuration.GetConnectionString("localDB"));
             services.AddScoped<IImageHelper, ImageHelper>();
-            services.ConfigureApplicationCookie(options=> 
+            services.ConfigureApplicationCookie(options =>
             {
                 options.LoginPath = new PathString("/Admin/Auth/Login"); //Kullanýcýnýn login olacaðý sayfa
                 options.LogoutPath = new PathString("/Admin/Auth/Logout");

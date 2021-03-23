@@ -13,9 +13,10 @@
                 },
                 className: 'btn btn-success',
                 action: function (e, dt, node, config) {
-                    let url = window.location.href;
-                    url = url.replace("/Index", ""); //Index yazılıysa onu siliyor ki add sayfasına gidebilsin
-                    window.open(`${url}/Add`, "_self"); // _self:aynı tag üzerinde sayfayı aç
+                    //bunu article index'e taşıdık
+                    //let url = window.location.href;
+                    //url = url.replace("/Index", ""); //Index yazılıysa onu siliyor ki add sayfasına gidebilsin
+                    //window.open(`${url}/Add`, "_self"); // _self:aynı tag üzerinde sayfayı aç
                 }
             },
             {

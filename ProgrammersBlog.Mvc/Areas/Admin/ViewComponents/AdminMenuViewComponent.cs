@@ -19,10 +19,14 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.ViewComponents
             _userManager = userManager;
         }
 
-        public ViewViewComponentResult Invoke()
+        public async Task<IViewComponentResult> InvokeAsync()
         {
-            var user = _userManager.GetUserAsync(HttpContext.User).Result; // ViewComponent asenkrona izin vermiyor o yüzden result kullandık
+            var user = await _userManager.GetUserAsync(HttpContext.User); // ViewComponent asenkrona izin vermiyor o yüzden result kullandık
             var roles = _userManager.GetRolesAsync(user).Result;
+            if (user == null)
+                return Content("Kullanıcı bulunamadı.");
+            if (roles == null)
+                return Content("Roller bulunamadı.");
             return View(new UserWithRolesViewModel
             {
                 User = user,
