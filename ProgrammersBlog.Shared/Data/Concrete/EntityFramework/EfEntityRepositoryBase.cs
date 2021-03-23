@@ -44,15 +44,16 @@ namespace ProgrammersBlog.Shared.Data.Concrete.EntityFramework
         {
             //Burada yapacağımız işleri include propertiesde de kullanacağımız için abonelik işlemi yapıyoruz
             IQueryable<TEntity> query = _context.Set<TEntity>();
-            if (predicate!=null)
+            if (predicate != null)
             {
                 query = query.Where(predicate);
             }
+
             if (includeProperties.Any())
             {
                 foreach (var includeProperty in includeProperties)
                 {
-                    query = query.Include(includeProperty); //Her gelen include için teker teker ekleme işlemi yapılacak
+                    query = query.Include(includeProperty); // Her gelen include için teker teker ekleme işlemi yapılacak
                 }
             }
 
