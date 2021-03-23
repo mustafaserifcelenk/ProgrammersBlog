@@ -48,7 +48,7 @@ namespace ProgrammersBlog.Mvc
 
             services.AddSession();
             // Sen bir MVC uygulamasýsýn
-            services.AddAutoMapper(typeof(CategoryProfile), typeof(ArticleProfile), typeof(UserProfile), typeof(ViewModelsProfile)); //Derlenme esnasýnda automapper'ýn buradaki sýnýflarý taramasýný saðlýyor 
+            services.AddAutoMapper(typeof(CategoryProfile), typeof(ArticleProfile), typeof(UserProfile), typeof(ViewModelsProfile), typeof(CommentProfile)); //Derlenme esnasýnda automapper'ýn buradaki sýnýflarý taramasýný saðlýyor 
             services.LoadMyServices(connectionString:Configuration.GetConnectionString("localDB"));
             services.AddScoped<IImageHelper, ImageHelper>();
             services.ConfigureApplicationCookie(options=> 
