@@ -44,7 +44,7 @@ namespace ProgrammersBlog.Mvc
 
                 // Modeller içine yapýlan includelarýnda sorunsuz çalýþabilmesi için, bu buglý o yüzden controllerda da vereceðiz ama yine de yazdýk
                 opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
-            });
+            }).AddNToastNotifyToastr();
 
             services.AddSession();
             // Sen bir MVC uygulamasýsýn
@@ -81,6 +81,7 @@ namespace ProgrammersBlog.Mvc
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseNToastNotify();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapAreaControllerRoute(
