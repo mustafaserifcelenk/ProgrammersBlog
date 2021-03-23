@@ -9,20 +9,22 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ProgrammersBlog.Entities.Concrete;
 using ProgrammersBlog.Entities.Dtos;
+using AutoMapper;
+using ProgrammersBlog.Mvc.Helpers.Abstract;
 
 namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class RoleController : Controller
+    public class RoleController : BaseController
     {
         private readonly RoleManager<Role> _roleManager;
 
-        public RoleController(RoleManager<Role> roleManager)
+        public RoleController(RoleManager<Role> roleManager, UserManager<User> userManager, IMapper mapper, IImageHelper imageHelper) : base(imageHelper, mapper, userManager)
         {
             _roleManager = roleManager;
         }
 
-        [Authorize(Roles="SuperAdmin,Role.Read")]
+        [Authorize(Roles = "SuperAdmin,Role.Read")]
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -42,6 +44,35 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
                 Roles = roles
             });
             return Json(roleListDto);
+        }
+
+        [Authorize(Roles = "SuperAdmin,User.Update")]
+        [HttpGet]
+        public async Task<IActionResult> Assign(int userId)
+        {
+            var user = await UserManager.Users.SingleOrDefaultAsync(u => u.Id == userId);
+            var roles = await _roleManager.Roles.ToListAsync();
+
+            // GetRolesAsync : Bize verilen kullanıcının rollerini döner
+            var userRoles = await UserManager.GetRolesAsync(user);
+            UserRoleAssignDto userRoleAssignDto = new UserRoleAssignDto
+            {
+                UserId = user.Id,
+                UserName = user.UserName
+            };
+            foreach (var role in roles)
+            {
+                RoleAssignDto rolesAssignDto = new RoleAssignDto
+                {
+                    RoleId = role.Id,
+                    RoleName = role.Name,
+                    // Sende bu rol ismi varsa sen bu role sahibsin demektir ve o role sahip olup olmadığı hasrole true/false olarak belirlenecektr
+                    HasRole = userRoles.Contains(role.Name)
+                };
+                userRoleAssignDto.RoleAssignDtos.Add(rolesAssignDto);
+            }
+
+            return PartialView("_RoleAssignPartial", userRoleAssignDto);
         }
     }
 }
