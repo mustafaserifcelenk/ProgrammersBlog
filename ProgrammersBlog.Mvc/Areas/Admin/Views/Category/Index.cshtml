@@ -10,14 +10,14 @@
 </ol>
 @if (Model.ResultStatus == ResultStatus.Success)
 {
-    <div id="modalPlaceHolder" aria-hidden="true"></div> //ModalPartialView Burada Görünecek
+    <div id="modalPlaceHolder" aria-hidden="true"></div>
     <div class="card mb-4 mt-2">
         <div class="card-header">
             <i class="fas fa-table mr-1"></i>
             Kategoriler
         </div>
         <div class="card-body">
-            <div class="spinner-border" role="status" style="display:none;">
+            <div class="spinner-border" role="status" style="display: none;">
                 <span class="sr-only">Yükleniyor...</span>
             </div>
             <div class="table-responsive">
@@ -59,7 +59,7 @@
                                 <td>@category.Id</td>
                                 <td>@category.Name</td>
                                 <td>@category.Description</td>
-                                <td>@(category.IsActive ? "Evet" : "Hayır") </td>
+                                <td>@(category.IsActive ? "Evet" : "Hayır")</td>
                                 <td>@(category.IsDeleted ? "Evet" : "Hayır")</td>
                                 <td>@category.Note</td>
                                 <td>@category.CreatedDate.ToShortDateString()</td>
@@ -68,8 +68,7 @@
                                 <td>@category.ModifiedByName</td>
                                 <td>
                                     <button class="btn btn-primary btn-sm btn-update" data-id="@category.Id"><span class="fas fa-edit"></span></button>
-                                    <button class="btn btn-danger btn-sm
-                                            btn-delete" data-id="@category.Id"><span class="fas fa-minus-circle"></span></button>
+                                    <button class="btn btn-danger btn-sm btn-delete" data-id="@category.Id"><span class="fas fa-minus-circle"></span></button>
                                 </td>
                             </tr>
                         }
@@ -86,8 +85,7 @@
         Dashboard sayfasına geri dönmek için lütfen <a class="alert-link" asp-area="Admin" asp-controller="Home" asp-action="Index">tıklayınız.</a>
     </div>
 }
-
 @section Scripts
 {
-    <script src="~/AdminLTE/js/categoryIndex.js" tyoe="application/ecmascript"></script>
+    <script src="~/AdminLTE/js/categoryIndex.js" type="application/ecmascript"></script>
 }
