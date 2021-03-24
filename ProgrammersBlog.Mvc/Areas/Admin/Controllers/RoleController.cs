@@ -94,7 +94,8 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
                         await UserManager.RemoveFromRoleAsync(user, roleAssignDto.RoleName);
                     }
                 }
-
+                // burada güncelleme kullanıcıya otomatik atanır ve 30 dk da bir kontrol gerçekleştirilir. Bu kontrolden sonra kullanıcıya gerekli atamalar yapılır.
+                await UserManager.UpdateSecurityStampAsync(user);
                 var userRoleAssignAjaxViewModel = JsonSerializer.Serialize(new UserRoleAssignAjaxViewModel
                 {
                     UserDto = new UserDto
