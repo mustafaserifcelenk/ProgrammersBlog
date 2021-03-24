@@ -16,7 +16,6 @@ namespace ProgrammersBlog.Services.Abstract
         Task<IDataResult<CommentListDto>> GetAllByDeletedAsync();
         Task<IDataResult<CommentListDto>> GetAllByNonDeletedAsync();
         Task<IDataResult<CommentListDto>> GetAllByNonDeletedAndActiveAsync();
-        Task<IDataResult<CommentListDto>> GetAllByDeletedAsync();
         Task<IDataResult<CommentDto>> AddAsync(CommentAddDto commentAddDto);
         Task<IDataResult<CommentDto>> ApproveAsync(int commentId, string modifiedByName);
         Task<IDataResult<CommentDto>> UpdateAsync(CommentUpdateDto commentUpdateDto, string modifiedByName);

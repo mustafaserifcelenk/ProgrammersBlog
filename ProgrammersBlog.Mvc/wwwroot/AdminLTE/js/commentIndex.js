@@ -137,7 +137,7 @@
                             if (commentResult.Data) {
                                 Swal.fire(
                                     'Silindi!',
-                                    `${commentResult.Message}`,
+                                    `${commentResult.Data.Comment.Id} no'lu yorum başarıyla veritabanından silinmiştir.`,
                                     'success'
                                 );
 

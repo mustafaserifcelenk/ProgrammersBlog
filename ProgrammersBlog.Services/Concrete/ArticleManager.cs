@@ -203,7 +203,7 @@ namespace ProgrammersBlog.Services.Concrete
             return new DataResult<ArticleListDto>(ResultStatus.Error, Messages.Article.NotFound(isPlural: true), null);
         }
 
-        public async Task<IResult> UndoAsync(int articleId, string modifiedByName)
+        public async Task<IResult> UndoDeleteAsync(int articleId, string modifiedByName)
         {
             var result = await UnitOfWork.Articles.AnyAsync(a => a.Id == articleId);
             if (result)
