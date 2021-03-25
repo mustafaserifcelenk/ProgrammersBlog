@@ -17,12 +17,12 @@ namespace ProgrammersBlog.Mvc.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(int? categoryId)
+        public async Task<IActionResult> Index(int? categoryId, int currentPage = 1, int pageSize = 5)
         {
-            var articleResult = await (categoryId == null 
-                ? _articleService.GetAllByNonDeletedAndActiveAsync() 
-                : _articleService.GetAllByCategoryAsync(categoryId.Value));
-            return View(articleResult.Data);
+            var articlesResult = await (categoryId == null
+                ? _articleService.GetAllByPagingAsync(null, currentPage, pageSize)
+                : _articleService.GetAllByPagingAsync(categoryId.Value, currentPage, pageSize));
+            return View(articlesResult.Data);
         }
     }
 }

@@ -219,18 +219,18 @@ namespace ProgrammersBlog.Services.Concrete
             }
             return new Result(ResultStatus.Error, Messages.Article.NotFound(isPlural: false));
         }
+
         public async Task<IDataResult<ArticleListDto>> GetAllByViewCountAsync(bool isAscending, int? takeSize)
         {
-            var articles =
-                await UnitOfWork.Articles.GetAllAsync(a => a.IsActive && !a.IsDeleted, a => a.Category, a => a.User);
-            var sortedArticles = isAscending
-                ? articles.OrderBy(a => a.ViewCount)
-                : articles.OrderByDescending(a => a.ViewCount);
+            var articles = await UnitOfWork.Articles.GetAllAsync(a => a.IsActive && !a.IsDeleted, a => a.User);
+            var sortedArticles = isAscending ? articles.OrderBy(a => a.ViewCount) : articles.OrderByDescending(a => a.ViewCount);
+
             return new DataResult<ArticleListDto>(ResultStatus.Success, new ArticleListDto
             {
                 Articles = takeSize == null ? sortedArticles.ToList() : sortedArticles.Take(takeSize.Value).ToList()
             });
         }
+
 
         public async Task<IDataResult<ArticleListDto>> GetAllByPagingAsync(int? categoryId, int currentPage = 1, int pageSize = 5, bool isAscending = false)
         {
@@ -250,5 +250,6 @@ namespace ProgrammersBlog.Services.Concrete
                 TotalCount = articles.Count
             });
         }
+
     }
 }
