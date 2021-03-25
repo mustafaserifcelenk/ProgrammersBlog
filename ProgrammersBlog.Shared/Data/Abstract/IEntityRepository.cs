@@ -16,6 +16,8 @@ namespace ProgrammersBlog.Shared.Data.Abstract
         Task<T> AddAsync(T entity); // <T> ekledik, kategori eklediğimizde bize kategori dönsün diye, ajax işlemlerinde bu dönüşe ihtiyacımız var
         Task<T> UpdateAsync(T entity); // Buna da <T> ekledik
         Task DeleteAsync(T entity);
+        // Predicateleri liste halinde aldık ki opsiyonel olarak alabilelim, öbür türlü her biri girilmek zorunda kalırdı kullanıcı tarafından
+        Task<IList<T>> SearhAsync(IList<Expression<Func<T, bool>>> predicates, params Expression<Func<T, object>>[] includeProperties);
         Task<bool> AnyAsync(Expression<Func<T, bool>> predicate);
         Task<int> CountAsync(Expression<Func<T, bool>> predicate = null);
     }
