@@ -14,5 +14,6 @@ namespace ProgrammersBlog.Entities.Dtos
         public IList<Article> Articles { get; set; }
         //public ResultStatus ResultStatus { get; set; } ResultStatus her sınıfta ortak olacağından bunu sharede koyacaz
         //public override ResultStatus ResultStatus { get; set; } = ResultStatus.Success;
+        public int? CategoryId { get; set; }
     }
 }
