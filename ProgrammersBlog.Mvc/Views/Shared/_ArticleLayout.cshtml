@@ -3,9 +3,11 @@
 <head>
     <title>@ViewBag.Title | Kısık Ses </title>
     <meta charset="utf-8" />
-    <meta name="description" content="Dindar ve ateist ilahiyatçılar için felsefe ve teolojiden tartışmalı içerikler" />
-    <meta name="author" content="Teist" />
+    <meta name="description" content="@ViewBag.Description" />
+    <meta name="author" content="Kısık Ses" />
+    <meta name="keywords" content="@ViewBag.Tags" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link href="~/BlogHome/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="~/Striped/assets/css/main.css" />
 </head>
 <body class="is-preload">
@@ -14,7 +16,7 @@
     @RenderBody()
 
     <!-- Sidebar -->
-    @await Component.InvokeAsync("RightSideBar") 
+    @await Component.InvokeAsync("RightSideBar")
 
 
     <!-- Scripts -->
@@ -23,6 +25,7 @@
     <script src="~/Striped/assets/js/breakpoints.min.js"></script>
     <script src="~/Striped/assets/js/util.js"></script>
     <script src="~/Striped/assets/js/main.js"></script>
+    <script src="~/BlogHome/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

@@ -1,0 +1,144 @@
+﻿@model ProgrammersBlog.Mvc.Models.RightSideBarViewModel
+<div id="sidebar">
+
+    <!-- Logo -->
+    <h1 id="logo"><a href="#">KISIK SES</a></h1>
+
+    <!-- Search -->
+    <section class="box search">
+        <form method="post" action="#">
+            <input type="text" class="text" name="search" placeholder="Ara" />
+        </form>
+    </section>
+
+    <!-- Nav -->
+    <nav id="nav">
+        <ul>
+            <li class="current"><a href="#">Son Eklenenler</a></li>
+            <li><a href="#">Arşiv</a></li>
+            <li><a href="#">Hakkımda</a></li>
+            <li><a href="#">İletişim</a></li>
+        </ul>
+    </nav>
+
+    <!-- Nav / Categories -->
+    <nav id="nav">
+        <header>
+            <h2>Kategoriler</h2>
+        </header>
+        <ul>
+            @*<li class="current">
+                <a asp-controller="Home" asp-action="Index">Tüm Makaleler</a>
+            </li>*@
+            @foreach (var category in Model.Categories)
+            {
+                <li>
+                    <a asp-controller="Home" asp-action="Index" asp-route-categoryId="@category.Id">@category.Name</a>
+                </li>
+            }
+        </ul>
+    </nav>
+
+    <!-- Text -->
+    <section class="box text-style1">
+        <div class="inner">
+            <p>
+                <strong>Retorik:</strong> Ne mi yapıyorum? Umursamamamya çalışıyorum, ucundan felsefe seviyorum, arada da bakıyorum, çelişki varsa söylüyorum.
+            </p>
+        </div>
+    </section>
+
+    <!-- Recent Posts -->
+    <section class="box recent-posts">
+        <header>
+            <h2>En çok okunan yazılar</h2>
+        </header>
+        <ul>
+            @for (int i = 0; i < Model.Articles.Count; i++)
+            {
+                <li><a asp-controller="Article" asp-action="Detail" asp-route-articleId="@Model.Articles[i].Id">@Model.Articles[i].Title</a></li>
+            }
+        </ul>
+    </section>
+
+    <!-- Recent Comments -->
+    <section class="box recent-comments">
+        <header>
+            <h2>Recent Comments</h2>
+        </header>
+        <ul>
+            <li>case on <a href="#">Lorem ipsum dolor</a></li>
+            <li>molly on <a href="#">Sed dolore magna</a></li>
+            <li>case on <a href="#">Sed dolore magna</a></li>
+        </ul>
+    </section>
+
+    <!-- Calendar -->
+    <section class="box calendar">
+        <div class="inner">
+            <table>
+                <caption>July 2014</caption>
+                <thead>
+                    <tr>
+                        <th scope="col" title="Monday">M</th>
+                        <th scope="col" title="Tuesday">T</th>
+                        <th scope="col" title="Wednesday">W</th>
+                        <th scope="col" title="Thursday">T</th>
+                        <th scope="col" title="Friday">F</th>
+                        <th scope="col" title="Saturday">S</th>
+                        <th scope="col" title="Sunday">S</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="4" class="pad"><span>&nbsp;</span></td>
+                        <td><span>1</span></td>
+                        <td><span>2</span></td>
+                        <td><span>3</span></td>
+                    </tr>
+                    <tr>
+                        <td><span>4</span></td>
+                        <td><span>5</span></td>
+                        <td><a href="#">6</a></td>
+                        <td><span>7</span></td>
+                        <td><span>8</span></td>
+                        <td><span>9</span></td>
+                        <td><a href="#">10</a></td>
+                    </tr>
+                    <tr>
+                        <td><span>11</span></td>
+                        <td><span>12</span></td>
+                        <td><span>13</span></td>
+                        <td class="today"><a href="#">14</a></td>
+                        <td><span>15</span></td>
+                        <td><span>16</span></td>
+                        <td><span>17</span></td>
+                    </tr>
+                    <tr>
+                        <td><span>18</span></td>
+                        <td><span>19</span></td>
+                        <td><span>20</span></td>
+                        <td><span>21</span></td>
+                        <td><span>22</span></td>
+                        <td><a href="#">23</a></td>
+                        <td><span>24</span></td>
+                    </tr>
+                    <tr>
+                        <td><a href="#">25</a></td>
+                        <td><span>26</span></td>
+                        <td><span>27</span></td>
+                        <td><span>28</span></td>
+                        <td class="pad" colspan="3"><span>&nbsp;</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Copyright -->
+    <ul id="copyright">
+        <li>&copy; Tüm hakları saklıdır.</li>
+        <li>Kısık Ses 2021</li>
+    </ul>
+
+</div>
