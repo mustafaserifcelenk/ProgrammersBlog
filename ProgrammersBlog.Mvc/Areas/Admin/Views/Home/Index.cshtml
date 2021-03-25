@@ -1,6 +1,6 @@
-﻿@model ProgrammersBlog.Mvc.Models.DashboardViewModel
+﻿@model ProgrammersBlog.Mvc.Areas.Admin.Models.DashboardViewModel
 @{ Layout = "_Layout";
-                ViewBag.Title = "Yönetim Paneli"; }
+    ViewBag.Title = "Yönetim Paneli"; }
 @*<h1 class="mt-4">Dashboard</h1>*@
 <ol class="breadcrumb mb-3 mt-2">
     <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="Home" asp-action="Index">Admin</a></li>
@@ -111,7 +111,8 @@
             <td>@article.CommentCount</td>
             <td>@(article.IsActive ? "Evet" : "Hayır")</td>
             <td>@(article.IsDeleted ? "Evet" : "Hayır")</td>
-        </tr>}
+        </tr>
+}
 
                 </tbody>
             </table>

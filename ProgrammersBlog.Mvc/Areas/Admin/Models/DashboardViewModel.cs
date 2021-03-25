@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ProgrammersBlog.Mvc.Models
+namespace ProgrammersBlog.Mvc.Areas.Admin.Models
 {
     public class DashboardViewModel
     {
