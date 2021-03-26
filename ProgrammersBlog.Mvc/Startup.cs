@@ -15,7 +15,6 @@ using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using ProgrammersBlog.Entities.Concrete;
-using ProgrammersBlog.Mvc.Filters;
 
 namespace ProgrammersBlog.Mvc
 {
@@ -40,7 +39,6 @@ namespace ProgrammersBlog.Mvc
         {
             //SelectList boþ geldiðinde model state hata verdiðinde ingilizce olan mesaj türkçe oldu
             options.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(value => "Bu alan boþ geçilmemelidir.");
-            options.Filters.Add<MvcExceptionFilter>();
         }).AddRazorRuntimeCompilation().AddJsonOptions(opt =>
         {
 
