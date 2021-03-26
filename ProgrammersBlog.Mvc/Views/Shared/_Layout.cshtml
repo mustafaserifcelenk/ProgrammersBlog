@@ -1,10 +1,17 @@
-﻿<!DOCTYPE HTML>
+﻿@using Microsoft.Extensions.Options
+@using ProgrammersBlog.Entities.Concrete
+@inject IOptions<WebsiteInfo> WebsiteInfo
+@{
+    var websiteInfo = WebsiteInfo.Value;
+}
+<!DOCTYPE HTML>
 <html lang="tr">
 <head>
-    <title>@ViewBag.Title | Kısık Ses </title>
+    <title>@ViewBag.Title | Kısık Ses@*websiteInfo.Title*@ </title>
     <meta charset="utf-8" />
-    <meta name="description" content="Dindar ve ateist ilahiyatçılar için felsefe ve teolojiden tartışmalı içerikler" />
-    <meta name="author" content="Teist" />
+    <meta name="description" content="@websiteInfo.SeoDescription" />
+    <meta name="author" content="@websiteInfo.SeoAuthor" />
+    <meta name="keywords" content="@websiteInfo.SeoTags"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="~/Striped/assets/css/main.css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" crossorigin="anonymous" />
