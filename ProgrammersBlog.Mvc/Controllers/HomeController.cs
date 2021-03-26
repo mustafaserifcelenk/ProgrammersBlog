@@ -34,6 +34,7 @@ namespace ProgrammersBlog.Mvc.Controllers
         [HttpGet]
         public async Task<IActionResult> About()
         {
+            //throw new Exception("Hata!");
             return View(_aboutUsPageInfo);
         }
 
