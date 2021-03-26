@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using ProgrammersBlog.Entities.Concrete;
 
 namespace ProgrammersBlog.Mvc
 {
@@ -31,24 +32,26 @@ namespace ProgrammersBlog.Mvc
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            // Senden aboutuspageinfo istenildiðinde bu classý belirtilen sectiondaki(appconfig.json) verilerle doldur
+            services.Configure<AboutUsPageInfo>(Configuration.GetSection("AboutUsPageInfo"));
             services.AddControllersWithViews(options =>
-            {
-                //SelectList boþ geldiðinde model state hata verdiðinde ingilizce olan mesaj türkçe oldu
-                options.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(value => "Bu alan boþ geçilmemelidir.");
-            }).AddRazorRuntimeCompilation().AddJsonOptions(opt =>
-            {
+        {
+            //SelectList boþ geldiðinde model state hata verdiðinde ingilizce olan mesaj türkçe oldu
+            options.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(value => "Bu alan boþ geçilmemelidir.");
+        }).AddRazorRuntimeCompilation().AddJsonOptions(opt =>
+        {
 
-                // Data ile gelen veriyi parse ederek bir deðiþken içerisine atýyoruz
-                // const ajaxModel = jQuery.parseJson(data);
-                // Deðiþken içerisindeki sonuç durumunu kontrol ediyoruz
-                //if(ajaxModel.ResultStatus === 0){}
-                opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-                //JsonStringEnumConverter(JsonNamingPolicy.CamelCase) 'de kullanabilirsiniz bu þu özelliði getirir
-                //if(ajaxModel.ResultStatus === "success"){}
+            // Data ile gelen veriyi parse ederek bir deðiþken içerisine atýyoruz
+            // const ajaxModel = jQuery.parseJson(data);
+            // Deðiþken içerisindeki sonuç durumunu kontrol ediyoruz
+            //if(ajaxModel.ResultStatus === 0){}
+            opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            //JsonStringEnumConverter(JsonNamingPolicy.CamelCase) 'de kullanabilirsiniz bu þu özelliði getirir
+            //if(ajaxModel.ResultStatus === "success"){}
 
-                // Modeller içine yapýlan includelarýnda sorunsuz çalýþabilmesi için, bu buglý o yüzden controllerda da vereceðiz ama yine de yazdýk
-                opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
-            }).AddNToastNotifyToastr();
+            // Modeller içine yapýlan includelarýnda sorunsuz çalýþabilmesi için, bu buglý o yüzden controllerda da vereceðiz ama yine de yazdýk
+            opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+        }).AddNToastNotifyToastr();
 
             services.AddSession();
             // Sen bir MVC uygulamasýsýn

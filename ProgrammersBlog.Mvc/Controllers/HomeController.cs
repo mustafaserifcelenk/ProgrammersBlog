@@ -4,16 +4,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
+using ProgrammersBlog.Entities.Concrete;
 
 namespace ProgrammersBlog.Mvc.Controllers
 {
     public class HomeController : Controller
     {
         private readonly IArticleService _articleService;
+        private readonly AboutUsPageInfo _aboutUsPageInfo;
 
-        public HomeController(IArticleService articleService)
+        // IOptions bizler için gerekli section'ı okuyor ve burada istemiş olduğumuz sınıfa bunları dolduruyor, appsettings.json dan veri okumak istenildiğinde bu her yerde kullanılabilir
+        public HomeController(IArticleService articleService, IOptions<AboutUsPageInfo> aboutUsPageInfo)
         {
             _articleService = articleService;
+            _aboutUsPageInfo = aboutUsPageInfo.Value;
         }
 
         [HttpGet]
@@ -23,6 +28,12 @@ namespace ProgrammersBlog.Mvc.Controllers
                 ? _articleService.GetAllByPagingAsync(null, currentPage, pageSize, isAscending)
                 : _articleService.GetAllByPagingAsync(categoryId.Value, currentPage, pageSize, isAscending));
             return View(articlesResult.Data);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> About()
+        {
+            return View(_aboutUsPageInfo);
         }
     }
 }
