@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -32,11 +33,35 @@ namespace ProgrammersBlog.Mvc.Filters
             {
                 // Hata ele alındı demek
                 context.ExceptionHandled = true;
-                var mvcErrorModel = new MvcErrorModel
+
+                // Message tek olsa burada böyle tanımlardık
+                var mvcErrorModel = new MvcErrorModel();
+                //{
+                //    Message =
+                //        $"Üzgünüz, işleminiz sırasında beklenmedik bir hata oluştu. Sorunu en kısa sürede çözeceğiz."
+                //};
+
+                //ViewResult result; Resultı case içinde tanımlamak için
+
+
+                switch (context.Exception)
                 {
-                    Message =
-                        $"Üzgünüz, işleminiz sırasında beklenmedik bir hata oluştu. Sorunu en kısa sürede çözeceğiz."
-                };
+                    case SqlNullValueException:
+                        mvcErrorModel.Message =
+                            $"Üzgünüz, işleminiz sırasında beklenmedik bir veritabanı hatası oluştu. Sorunu en kısa sürede çözeceğiz.";
+                        mvcErrorModel.Detail = context.Exception.Message;
+                        break;
+                    case NullReferenceException:
+                        mvcErrorModel.Message =
+                            $"Üzgünüz, işleminiz sırasında beklenmedik bir null hatası oluştu. Sorunu en kısa sürede çözeceğiz.";
+                        mvcErrorModel.Detail = context.Exception.Message;
+                        // result = new ViewResult { ViewName = "Error2" };
+                        break;
+                    default:
+                        mvcErrorModel.Message =
+                            $"Üzgünüz, işleminiz sırasında beklenmedik bir hata oluştu. Sorunu en kısa sürede çözeceğiz.";
+                        break;
+                }
                 // Hata durumununda dönülecek view
                 var result = new ViewResult {ViewName = "Error"};
                 result.StatusCode = 500;

@@ -35,6 +35,7 @@ namespace ProgrammersBlog.Mvc.Controllers
         public async Task<IActionResult> About()
         {
             //throw new Exception("Hata!");
+            //throw new NullReferenceException();
             return View(_aboutUsPageInfo);
         }
 
