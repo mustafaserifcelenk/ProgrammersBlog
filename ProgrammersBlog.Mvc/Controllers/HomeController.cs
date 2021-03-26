@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using ProgrammersBlog.Entities.Concrete;
+using ProgrammersBlog.Entities.Dtos;
 
 namespace ProgrammersBlog.Mvc.Controllers
 {
@@ -34,6 +35,17 @@ namespace ProgrammersBlog.Mvc.Controllers
         public async Task<IActionResult> About()
         {
             return View(_aboutUsPageInfo);
+        }
+
+        [HttpGet]
+        public IActionResult Contact()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Contact(EmailSendDto emailSendDto)
+        {
+            return View();
         }
     }
 }
