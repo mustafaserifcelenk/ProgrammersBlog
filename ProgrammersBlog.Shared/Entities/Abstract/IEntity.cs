@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProgrammersBlog.Shared.Entities.Abstract
 {
-    public interface IEntity
+    public interface IEntity // Hangi sınıflar veritabanına gidiyor anlamamızı sağlıyor
     {
     }
 }
