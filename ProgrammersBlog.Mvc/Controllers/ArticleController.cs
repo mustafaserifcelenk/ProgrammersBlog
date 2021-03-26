@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ProgrammersBlog.Entities.ComplexTypes;
 
 namespace ProgrammersBlog.Mvc.Controllers
 {
@@ -35,11 +36,24 @@ namespace ProgrammersBlog.Mvc.Controllers
         public async Task<IActionResult> Detail(int articleId)
         {
             var articleResult = await _articleService.GetAsync(articleId);
-            if (articleResult.ResultStatus==ResultStatus.Success)
+            if (articleResult.ResultStatus == ResultStatus.Success)
             {
+                var userArticles = await _articleService.GetAllByUserIdOnFilter(articleResult.Data.Article.UserId,
+                    FilterBy.Category, OrderBy.Date, false, 10, articleResult.Data.Article.CategoryId, DateTime.Now,
+                    DateTime.Now, 0, 99999, 0, 99999);
                 await _articleService.IncreaseViewCountAsync(articleId);
-                return View(articleResult.Data);
+                return View(new ArticleDetailViewModel
+                {
+                    ArticleDto = articleResult.Data,
+                    ArticleDetailRightSideBarViewModel = new ArticleDetailRightSideBarViewModel
+                    {
+                        ArticleListDto = userArticles.Data,
+                        Header = "Kullanıcının Aynı Kategori Üzerindeki En Çok Okunan Makaleleri",
+                        User = articleResult.Data.Article.User
+                    }
+                });
             }
+
             return NotFound();
         }
     }

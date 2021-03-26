@@ -1,11 +1,11 @@
 ﻿@using ProgrammersBlog.Entities.Dtos
-@model ProgrammersBlog.Entities.Dtos.ArticleDto
+@model ProgrammersBlog.Mvc.Models.ArticleDetailViewModel
 @{
     Layout = "_ArticleLayout";
-    ViewBag.Title = Model.Article.Title;
-    ViewBag.Description = Model.Article.SeoDescription;
-    //ViewBag.Author = Model.Article.SeoAuthor;
-    ViewBag.Tags = Model.Article.SeoTags;
+    ViewBag.Title = Model.ArticleDto.Article.Title;
+    ViewBag.Description = Model.ArticleDto.Article.SeoDescription;
+    //ViewBag.Author = Model.ArticleDto.Article.SeoAuthor;
+    ViewBag.Tags = Model.ArticleDto.Article.SeoTags;
 }
 <div id="content">
     <div class="inner">
@@ -19,8 +19,8 @@
                     if they get too long. You can also remove the <p> entirely if you don't
                     need a subtitle.
                 -->
-                <h2><a href="#">@Model.Article.Title</a></h2>
-                <p>@Model.Article.SeoDescription</p>
+                <h2><a href="#">@Model.ArticleDto.Article.Title</a></h2>
+                <p>@Model.ArticleDto.Article.SeoDescription</p>
             </header>
             <div class="info">
                 <!--
@@ -31,7 +31,7 @@
                     the entire "date" element.
 
                 -->
-                <span class="date"><span class="month">@(Model.Article.Date.Month.ToString().Length>3 ? Model.Article.Date.Month.ToString().Substring(3) : Model.Article.Date.Month.ToString())<span>y</span></span> <span class="day">@Model.Article.Date.Day</span><span class="year">, @Model.Article.Date.Year</span></span>
+                <span class="date"><span class="month">@(Model.ArticleDto.Article.Date.Month.ToString().Length>3 ? Model.ArticleDto.Article.Date.Month.ToString().Substring(3) : Model.ArticleDto.Article.Date.Month.ToString())<span>y</span></span> <span class="day">@Model.ArticleDto.Article.Date.Day</span><span class="year">, @Model.ArticleDto.Article.Date.Year</span></span>
                 <!--
                     Note: You can change the number of list items in "stats" to whatever you want.
                 -->
@@ -42,23 +42,23 @@
                     <li><a href="#" class="icon brands fa-facebook-f">128</a></li>
                 </ul>
             </div>
-            <a href="#" class="image featured"><img src="~/img/@Model.Article.Thumbnail" alt="@Model.Article.Title" /></a>
+            <a href="#" class="image featured"><img src="~/img/@Model.ArticleDto.Article.Thumbnail" alt="@Model.ArticleDto.Article.Title" /></a>
             <p>
-                @Html.Raw(Model.Article.Content)
+                @Html.Raw(Model.ArticleDto.Article.Content)
             </p>
         </article>
 
         <hr>
 
-        <p class="text-center">Okunma Sayısı: <span class="badge badge-info">@Model.Article.ViewCount</span> Yorum Sayısı: <span class="badge badge-warning">@Model.Article.CommentCount</span></p>
+        <p class="text-center">Okunma Sayısı: <span class="badge badge-info">@Model.ArticleDto.Article.ViewCount</span> Yorum Sayısı: <span class="badge badge-warning">@Model.ArticleDto.Article.CommentCount</span></p>
 
         <!-- Comments Form -->
-       <partial name="~/Views/Comment/_CommentAddPartial.cshtml" model="new CommentAddDto { ArticleId = Model.Article.Id}" />
-        @*@Html.PartialAsync("_CommentAddPartial", new CommentAddDto { ArticleId = Model.Article.Id})*@
+       <partial name="~/Views/Comment/_CommentAddPartial.cshtml" model="new CommentAddDto { ArticleId = Model.ArticleDto.Article.Id}" />
+        @*@Html.PartialAsync("_CommentAddPartial", new CommentAddDto { ArticleId = Model.ArticleDto.Article.Id})*@
 
         <div id="comments">
 
-        @foreach (var comment in Model.Article.Comments)
+        @foreach (var comment in Model.ArticleDto.Article.Comments)
         {<!-- Single Comment -->
             <div class="media mb-4">
                 <img class="d-flex mr-3 rounded-circle" src="https://randomuser.me/api/portraits/men/34.jpg" alt="">
