@@ -8,6 +8,7 @@ using Microsoft.Extensions.Options;
 using NToastNotify;
 using ProgrammersBlog.Entities.Concrete;
 using ProgrammersBlog.Entities.Dtos;
+using ProgrammersBlog.Shared.Utilities.Helpers.Abstract;
 
 namespace ProgrammersBlog.Mvc.Controllers
 {
@@ -17,14 +18,17 @@ namespace ProgrammersBlog.Mvc.Controllers
         private readonly AboutUsPageInfo _aboutUsPageInfo;
         private readonly IMailService _mailService;
         private readonly IToastNotification _toastNotification;
+        private readonly IWritableOptions<AboutUsPageInfo> _aboutUsPageInfoWriter;
 
         // IOptions bizler için gerekli section'ı okuyor ve burada istemiş olduğumuz sınıfa bunları dolduruyor, appsettings.json dan veri okumak istenildiğinde bu her yerde kullanılabilir
         // Snapshottan alcak
-        public HomeController(IArticleService articleService, IOptionsSnapshot<AboutUsPageInfo> aboutUsPageInfo, IMailService mailService)
+        public HomeController(IArticleService articleService, IOptionsSnapshot<AboutUsPageInfo> aboutUsPageInfo, IMailService mailService, IToastNotification toastNotification, IWritableOptions<AboutUsPageInfo> aboutUsPageInfoWriterOptions)
         {
             _articleService = articleService;
             _mailService = mailService;
             _aboutUsPageInfo = aboutUsPageInfo.Value;
+            _toastNotification = toastNotification;
+            _aboutUsPageInfoWriter = aboutUsPageInfoWriterOptions;
         }
 
         [HttpGet]
@@ -41,6 +45,11 @@ namespace ProgrammersBlog.Mvc.Controllers
         {
             //throw new Exception("Hata!");
             //throw new NullReferenceException();
+            _aboutUsPageInfoWriter.Update(x =>
+            {
+                x.Header = "Yeni Başlık";
+                x.Content = "Yeni İçerik";
+            });
             return View(_aboutUsPageInfo);
         }
 

@@ -16,6 +16,7 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using ProgrammersBlog.Entities.Concrete;
 using ProgrammersBlog.Mvc.Filters;
+using ProgrammersBlog.Shared.Utilities.Extensions;
 
 namespace ProgrammersBlog.Mvc
 {
@@ -37,6 +38,10 @@ namespace ProgrammersBlog.Mvc
             services.Configure<AboutUsPageInfo>(Configuration.GetSection("AboutUsPageInfo"));
             services.Configure<WebsiteInfo>(Configuration.GetSection("WebsiteInfo"));
             services.Configure<SmtpSettings>(Configuration.GetSection("SmtpSettings"));
+
+            // Writeable iþlemleri için
+            services.ConfigureWritable<AboutUsPageInfo>(Configuration.GetSection("AboutUsPageInfo"));
+
             services.AddControllersWithViews(options =>
         {
             //SelectList boþ geldiðinde model state hata verdiðinde ingilizce olan mesaj türkçe oldu
