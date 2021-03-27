@@ -38,6 +38,8 @@ namespace ProgrammersBlog.Mvc
             services.Configure<AboutUsPageInfo>(Configuration.GetSection("AboutUsPageInfo"));
             services.Configure<WebsiteInfo>(Configuration.GetSection("WebsiteInfo"));
             services.Configure<SmtpSettings>(Configuration.GetSection("SmtpSettings"));
+            services.ConfigureWritable<WebsiteInfo>(Configuration.GetSection("WebsiteInfo"));
+            services.ConfigureWritable<SmtpSettings>(Configuration.GetSection("SmtpSettings"));
 
             // Writeable iþlemleri için
             services.ConfigureWritable<AboutUsPageInfo>(Configuration.GetSection("AboutUsPageInfo"));
