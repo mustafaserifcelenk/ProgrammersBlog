@@ -18,6 +18,8 @@ namespace ProgrammersBlog.Shared.Data.Concrete.EntityFramework
         public EfEntityRepositoryBase(DbContext context)
         {
             _context = context;
+            // Tüm sınıf için
+            //_context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         public async Task<TEntity> AddAsync(TEntity entity) // ajax için ekleme buraya, return değeri ekledik (IEntityRepository)
@@ -58,7 +60,7 @@ namespace ProgrammersBlog.Shared.Data.Concrete.EntityFramework
                 }
             }
 
-            return await query.ToListAsync();
+            return await query.AsNoTracking().ToListAsync();
         }
 
         public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] includeProperties)
@@ -74,7 +76,7 @@ namespace ProgrammersBlog.Shared.Data.Concrete.EntityFramework
                 }
             }
 
-            return await query.SingleOrDefaultAsync();
+            return await query.AsNoTracking().SingleOrDefaultAsync();
         }
 
         public async Task<IList<TEntity>> SearchAsync(IList<Expression<Func<TEntity, bool>>> predicates, params Expression<Func<TEntity, object>>[] includeProperties)
@@ -99,7 +101,8 @@ namespace ProgrammersBlog.Shared.Data.Concrete.EntityFramework
                     query = query.Include(includeProperty);
                 }
             }
-            return await query.ToListAsync();
+            // Sonsuz loopa girmeyi engeller
+            return await query.AsNoTracking().ToListAsync();
         }
 
         public async Task<TEntity> UpdateAsync(TEntity entity)
