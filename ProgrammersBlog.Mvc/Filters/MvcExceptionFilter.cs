@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using ProgrammersBlog.Shared.Entities.Concrete;
 
 namespace ProgrammersBlog.Mvc.Filters
@@ -19,11 +20,13 @@ namespace ProgrammersBlog.Mvc.Filters
         private readonly IHostEnvironment _environment;
         // 
         private readonly IModelMetadataProvider _metadataProvider;
+        private readonly ILogger _logger;
 
-        public MvcExceptionFilter(IHostEnvironment environment, IModelMetadataProvider metadataProvider)
+        public MvcExceptionFilter(IHostEnvironment environment, IModelMetadataProvider metadataProvider, ILogger<MvcExceptionFilter> logger)
         {
             _environment = environment;
             _metadataProvider = metadataProvider;
+            _logger = logger;
         }
 
         // Hata üzerindeyiz
@@ -41,7 +44,7 @@ namespace ProgrammersBlog.Mvc.Filters
                 //        $"Üzgünüz, işleminiz sırasında beklenmedik bir hata oluştu. Sorunu en kısa sürede çözeceğiz."
                 //};
 
-                //ViewResult result; Resultı case içinde tanımlamak için
+                ViewResult result; /*Resultı case içinde tanımlamak için*/
 
 
                 switch (context.Exception)
@@ -49,22 +52,30 @@ namespace ProgrammersBlog.Mvc.Filters
                     case SqlNullValueException:
                         mvcErrorModel.Message =
                             $"Üzgünüz, işleminiz sırasında beklenmedik bir veritabanı hatası oluştu. Sorunu en kısa sürede çözeceğiz.";
+                        result = new ViewResult {ViewName = "Error"};
                         mvcErrorModel.Detail = context.Exception.Message;
+                        result.StatusCode = 500;
+                        _logger.LogError(context.Exception,context.Exception.Message);
                         break;
                     case NullReferenceException:
                         mvcErrorModel.Message =
                             $"Üzgünüz, işleminiz sırasında beklenmedik bir null hatası oluştu. Sorunu en kısa sürede çözeceğiz.";
+                        result = new ViewResult { ViewName = "Error" };
                         mvcErrorModel.Detail = context.Exception.Message;
                         // result = new ViewResult { ViewName = "Error2" };
+                        result.StatusCode = 403;
+                        _logger.LogError(context.Exception, context.Exception.Message);
                         break;
                     default:
                         mvcErrorModel.Message =
                             $"Üzgünüz, işleminiz sırasında beklenmedik bir hata oluştu. Sorunu en kısa sürede çözeceğiz.";
+                        result = new ViewResult { ViewName = "Error" };
+                        result.StatusCode = 403;
+                        _logger.LogError(context.Exception, "Bu benim log hata mesajım!");
                         break;
                 }
                 // Hata durumununda dönülecek view
-                var result = new ViewResult {ViewName = "Error"};
-                result.StatusCode = 500;
+                //result.StatusCode = 500;
                 // ViewData'ya gerekli modelstatei aktarma, bu modelstate bizim mvcErrorModeli taşıyacak?
                 result.ViewData = new ViewDataDictionary(_metadataProvider, context.ModelState);
                 // ViewData'ya MvcErrorModel'i de gönderiyoruz

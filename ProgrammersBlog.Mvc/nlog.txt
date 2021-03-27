@@ -1,0 +1,1 @@
+﻿nlog(nlog.config) sadece bilgisayar üzerine loglama yapabilir. O yüzden yeni bir target ekledik.

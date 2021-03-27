@@ -36,6 +36,7 @@ namespace ProgrammersBlog.Mvc
             // Senden aboutuspageinfo istenildiðinde bu classý belirtilen sectiondaki(appconfig.json) verilerle doldur
             services.Configure<AboutUsPageInfo>(Configuration.GetSection("AboutUsPageInfo"));
             services.Configure<WebsiteInfo>(Configuration.GetSection("WebsiteInfo"));
+            services.Configure<SmtpSettings>(Configuration.GetSection("SmtpSettings"));
             services.AddControllersWithViews(options =>
         {
             //SelectList boþ geldiðinde model state hata verdiðinde ingilizce olan mesaj türkçe oldu

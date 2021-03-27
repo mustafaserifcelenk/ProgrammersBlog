@@ -159,6 +159,7 @@ namespace ProgrammersBlog.Services.Concrete
 
         public async Task<IDataResult<ArticleListDto>> GetAllByNonDeletedAndActiveAsync()
         {
+            //throw new SqlNullValueException();
             var articles = await UnitOfWork.Articles.GetAllAsync(a => !a.IsDeleted && a.IsActive, a => a.User, a => a.Category);
 
             if (articles.Count > -1)
