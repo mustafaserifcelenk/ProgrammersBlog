@@ -19,7 +19,8 @@ namespace ProgrammersBlog.Mvc.Controllers
         private readonly IToastNotification _toastNotification;
 
         // IOptions bizler için gerekli section'ı okuyor ve burada istemiş olduğumuz sınıfa bunları dolduruyor, appsettings.json dan veri okumak istenildiğinde bu her yerde kullanılabilir
-        public HomeController(IArticleService articleService, IOptions<AboutUsPageInfo> aboutUsPageInfo, IMailService mailService)
+        // Snapshottan alcak
+        public HomeController(IArticleService articleService, IOptionsSnapshot<AboutUsPageInfo> aboutUsPageInfo, IMailService mailService)
         {
             _articleService = articleService;
             _mailService = mailService;
