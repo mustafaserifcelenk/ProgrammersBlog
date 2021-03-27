@@ -45,11 +45,11 @@ namespace ProgrammersBlog.Mvc.Controllers
         {
             //throw new Exception("Hata!");
             //throw new NullReferenceException();
-            _aboutUsPageInfoWriter.Update(x =>
-            {
-                x.Header = "Yeni Başlık";
-                x.Content = "Yeni İçerik";
-            });
+            //_aboutUsPageInfoWriter.Update(x =>
+            //{
+            //    x.Header = "Yeni Başlık";
+            //    x.Content = "Yeni İçerik";
+            //}); Controller üzerinden appsettings.json vasıtasıyla about page değerlerini değiştirme
             return View(_aboutUsPageInfo);
         }
 
