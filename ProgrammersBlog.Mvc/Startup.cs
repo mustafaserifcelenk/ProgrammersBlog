@@ -40,7 +40,10 @@ namespace ProgrammersBlog.Mvc
             services.Configure<SmtpSettings>(Configuration.GetSection("SmtpSettings"));
             services.ConfigureWritable<WebsiteInfo>(Configuration.GetSection("WebsiteInfo"));
             services.ConfigureWritable<SmtpSettings>(Configuration.GetSection("SmtpSettings"));
-
+            services.Configure<ArticleRightSideBarWidgetOptions>(
+                Configuration.GetSection("ArticleRightSideBarWidgetOptions"));
+            services.ConfigureWritable<ArticleRightSideBarWidgetOptions>(
+                Configuration.GetSection("ArticleRightSideBarWidgetOptions"));
             // Writeable iþlemleri için
             services.ConfigureWritable<AboutUsPageInfo>(Configuration.GetSection("AboutUsPageInfo"));
 
